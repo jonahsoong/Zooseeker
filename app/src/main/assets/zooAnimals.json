@@ -1,0 +1,113 @@
+[
+  {
+    "animal": "elephant",
+    "availability": true,
+    "x-coordinate": 41.40338,
+    "y-coordinate": 2.17403,
+    "scientific name": "Loxodonta africana",
+    "common name": "African elephant",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/African_Elephant_%28Loxodonta_africana%29_%28cropped%29.jpg/220px-African_Elephant_%28Loxodonta_africana%29_%28cropped%29.jpg",
+    "description": "Elephants are the largest land mammals on earth and have distinctly massive bodies, large ears, and long trunks. They use their trunks to pick up objects, trumpet warnings, greet other elephants, or suck up water for drinking or bathing, among other uses.",
+    "PlaceID":"1"
+  },
+  {
+    "animal": "giraffe",
+    "availability": false,
+    "x-coordinate": 30.24568,
+    "y-coordinate": 36.45987,
+    "scientific name": "Giraffa camelopardalis",
+    "common name": "Giraffe",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Giraffe_%28Giraffa_camelopardalis%29_%28cropped%29.jpg/220px-Giraffe_%28Giraffa_camelopardalis%29_%28cropped%29.jpg",
+    "description": "Giraffes are tall, graceful, and graceful. They are the tallest living terrestrial animals, standing at 6.5 to 8.5 feet tall. They are the largest of all the living giraffe species, and the largest of all the living equine species. They are the largest of all the living mammals, and the largest of all the living non-mammals.",
+    "PlaceID":"2"
+  },
+  {
+    "animal": "lion",
+    "availability": true,
+    "x-coordinate": -1.96768,
+    "y-coordinate": 29.81759,
+    "scientific name": "Panthera leo",
+    "common name": "Lion",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Lion_%28Panthera_leo%29_%28cropped%29.jpg/220px-Lion_%28Panthera_leo%29_%28cropped%29.jpg",
+    "description": "Lions are the largest of all the big cats in the genus Panthera. They are the only cat species to survive in the wild, and the only cat species to survive in captivity. They are the only cat species to survive in the wild, and the only cat species to survive in captivity.",
+    "PlaceID":"3"
+  },
+  {
+    "animal": "zebra",
+    "availability": true,
+    "x-coordinate": -18.65981,
+    "y-coordinate": 30.56974,
+    "scientific name": "Equus zebra",
+    "common name": "Zebra",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Zebra_%28Equus_zebra%29_%28cropped%29.jpg/220px-Zebra_%28Equus_zebra%29_%28cropped%29.jpg",
+    "description": "Zebras are the only extant species of the zebra family. They are the only living species of the zebra genus. Zebras are the only extant species of the zebra family. They are the only living species of the zebra genus.",
+    "PlaceID":"4"
+  },
+  {
+    "animal":"wolf",
+    "availability": false,
+    "x-coordinate": 35.63148,
+    "y-coordinate": 128.32658,
+    "scientific name": "Canis lupus",
+    "common name": "Wolf",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Wolf_%28Canis_lupus%29_%28cropped%29.jpg/220px-Wolf_%28Canis_lupus%29_%28cropped%29.jpg",
+    "description": "Wolves are the smallest of the big cats in the genus Canis. They are the only cat species to survive in the wild, and the only cat species to survive in captivity. Wolves are the only cat species to survive in the wild, and the only cat species to survive in captivity.",
+    "PlaceID":"5"
+  },
+  {
+    "animal":"bear",
+    "availability": true,
+    "x-coordinate": -1.96768,
+    "y-coordinate": 29.81759,
+    "scientific name": "Ursus arctos",
+    "common name": "Bear",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bear_%28Ursus_arctos%29_%28cropped%29.jpg/220px-Bear_%28Ursus_arctos%29_%28cropped%29.jpg",
+    "description": "Bears are the largest of the big cats in the genus Ursus. They are the only cat species to survive in the wild, and the only cat species to survive in captivity. Bears are the only cat species to survive in the wild, and the only cat species to survive in captivity.",
+    "PlaceID":"6"
+  },
+  {
+    "animal":"hippo",
+    "availability": true,
+    "x-coordinate": -18.32654,
+    "y-coordinate": 24.36874,
+    "scientific name": "Hippopotamus amphibius",
+    "common name": "Hippo",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Hippo_%28Hippopotamus_amphibius%29_%28cropped%29.jpg/220px-Hippo_%28Hippopotamus_amphibius%29_%28cropped%29.jpg",
+    "description": "Hippos are the largest of the big cats in the genus Hippopotamus. They are the only cat species to survive in the wild, and the only cat species to survive in captivity. Hippos are the only cat species to survive in the wild, and the only cat species to survive in captivity.",
+    "PlaceID":"7"
+  },
+
+  {
+    "animal":"baboon",
+    "availability": true,
+    "x-coordinate": 63.59874,
+    "y-coordinate": 36.32146,
+    "scientific name": "Papio cynocephalus",
+    "common name": "Baboon",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Baboon_%28Papio_cynocephalus%29_%28cropped%29.jpg/220px-Baboon_%28Papio_cynocephalus%29_%28cropped%29.jpg",
+    "description": "Baboons are the smallest of the big cats in the genus Papio. They are the only cat species to survive in the wild, and the only cat species to survive in captivity. Baboons are the only cat species to survive in the wild, and the only cat species to survive in captivity.",
+    "PlaceID":"8"
+  },
+  {
+    "animal":"Entrance",
+    "availability": true,
+    "x-coordinate": 0.00000,
+    "y-coordinate": 0.00000,
+    "scientific name": "Entrance",
+    "common name": "Gate",
+    "image":"None",
+    "description":"this is a entrance",
+    "PlaceID":"0"
+  },
+  {
+    "animal":"Exit",
+    "availability": true,
+    "x-coordinate": 200.00000,
+    "y-coordinate": 200.00000,
+    "scientific name": "Exit",
+    "common name": "Gate",
+    "image":"None",
+    "description":"this is a exit",
+    "PlaceID":"-1"
+  }
+]
