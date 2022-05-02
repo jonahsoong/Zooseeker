@@ -58,4 +58,14 @@ public class RouteTest {
 
         assertNotEquals(id1, id2);
     }
+    @Test
+    public void testDelete() {
+        RouteItem item = new RouteItem("Elephant", "Sahara", 100);
+        long id = dao.insert(item);
+
+        item = dao.get(id);
+        int itemsDeleted = dao.delete(item);
+        assertEquals(1, itemsDeleted);
+        assertNull(dao.get(id));
+    }
 }
