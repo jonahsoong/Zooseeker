@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void open_route(View view) {
-        Intent intent = new Intent(this,RouteActivity.class);
-        startActivity(intent);
-    }
+//    public void open_route(View view) {
+//        Intent intent = new Intent(this,RouteActivity.class);
+//        startActivity(intent);
+//    }
 }
