@@ -20,9 +20,11 @@ import java.util.List;
 public class SearchItem {
     public String id = "";
     public List<String> tags;
-    SearchItem(String id, List<String> tags){
+    public String name = "";
+    SearchItem(String id, List<String> tags, String name){
         this.id = id;
         this.tags = tags;
+        this.name = name;
     }
 
     @Override
@@ -30,6 +32,7 @@ public class SearchItem {
         return "SearchItem{" +
                 "id='" + id + '\'' +
                 ", tags=" + tags +
+                ", name='" + name + '\'' +
                 '}';
     }
 
