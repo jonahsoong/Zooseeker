@@ -46,6 +46,7 @@ public class SearchActivity extends AppCompatActivity {
 //        filteredId = new ArrayList<String>(id);
 //        filteredId = id;
         listView = findViewById(R.id.listview);
+//        takes in an adapter, a view and a position and uses them
         listView.setOnItemClickListener((adapter, v, position, arg3) -> {
             String value = (String)adapter.getItemAtPosition(position);
             AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
