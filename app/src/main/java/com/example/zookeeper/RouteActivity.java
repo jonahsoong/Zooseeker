@@ -41,10 +41,10 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     public void planButtonClicked(View view) {
-        List<RouteItem> planned = viewModel.getList();
-        Log.d("Planned", planned.toString());
-//        Intent intent = new Intent(this,PlanActivity.class);
-//        startActivity(intent);
+        //List<RouteItem> planned = viewModel.getList();
+       // Log.d("Planned", planned.toString());
+       Intent intent = new Intent(this,PlanActivity.class);
+        startActivity(intent);
     }
 
 }
