@@ -26,19 +26,13 @@ public class PlanActivity extends AppCompatActivity {
 
         RouteAdapter adapter = new RouteAdapter();
         adapter.setHasStableIds(true);
-        //adapter.setOnCheckBoxClickedHandler(viewModel::toggleCompleted);
-        //adapter.setOnTextEditedHandler(viewModel::updateText);
         adapter.setOnDeleteButtonClicked(viewModel::deleteTodo);
         viewModel.getRoute().observe(this, adapter::setRouteItems);
-
+        //set view to text
         recyclerView = findViewById(R.id.route_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        //this.newTodoText = this.findViewById(R.id.new_todo_text);
-        //this.addTodoButton = this.findViewById(R.id.add_todo_btn);
-
-        //addTodoButton.setOnClickListener(this::onAddTodoClicked);
     }
 
     public void onBackClicked(View view) {
