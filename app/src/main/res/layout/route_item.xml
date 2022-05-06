@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/animal_text"
-        android:layout_width="260dp"
+        android:layout_width="225dp"
         android:layout_height="48dp"
         android:layout_marginStart="40dp"
         android:gravity="center_vertical"
-        android:textSize="24dp"
+        android:textSize="20dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/dist_text"
         app:layout_constraintEnd_toStartOf="@+id/dist_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
         app:layout_constraintEnd_toStartOf="@+id/del_btn"
         app:layout_constraintStart_toEndOf="@+id/animal_text"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -47,6 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dist_text"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

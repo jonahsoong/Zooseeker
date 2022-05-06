@@ -2,12 +2,16 @@ package com.example.zookeeper;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -24,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     ArrayAdapter<String> originalIdsAd;
     List<SearchItem> animals;
+    private RouteViewModel viewModel;
 
 
 
@@ -31,6 +36,8 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        viewModel = new ViewModelProvider(this)
+                .get(RouteViewModel.class);
         int index = 0;
         animals =  SearchItem.loadJSON(this,"nodes.json");
         Log.d("SearchItems", animals.toString());
@@ -52,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
             builder.setMessage("Are you sure you want to add " + value + " to the route?")
             .setPositiveButton("Yes", (dialogInterface, i) -> {
-                String currentId;
+                String currentId = "";
                 Log.d("item on click", value);
 //                get the id of the animal
                 for (SearchItem animal: animals){
@@ -61,6 +68,7 @@ public class SearchActivity extends AppCompatActivity {
                         Log.d("Animal id for the name", "onCreate: " + currentId);
                     }
                 }
+                viewModel.createRouteItem(currentId);
             })
             .setNegativeButton("No",null);
             AlertDialog alert = builder.create();
@@ -136,5 +144,10 @@ public class SearchActivity extends AppCompatActivity {
 
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void onPlanClicked(View view) {
+        Intent intent = new Intent(this,PlanActivity.class);
+        startActivity(intent);
     }
 }

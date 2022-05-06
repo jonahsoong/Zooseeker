@@ -26,14 +26,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-//    public void setOnCheckBoxClickedHandler(Consumer<TodoListItem> onCheckBoxClicked) {
-//        this.onCheckBoxClicked = onCheckBoxClicked;
-//    }
-
-//    public void setOnTextEditedHandler(BiConsumer<TodoListItem, String> onTextEdited) {
-//        this.onTextEditedHandler = onTextEdited;
-//    }
-//
     public void setOnDeleteButtonClicked(Consumer<RouteItem> onDeleteButtonClicked) {
         this.onDeleteButtonClicked = onDeleteButtonClicked;
     }
@@ -73,20 +65,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.animal_text);
-        //    this.checkBox = itemView.findViewById(R.id.completed);
             this.deleteBtn = itemView.findViewById(R.id.del_btn);
 
-//            this.checkBox.setOnClickListener(view -> {
-//                if (onCheckBoxClicked == null) return;
-//                onCheckBoxClicked.accept(todoItem);
-//            });
-
-//            this.textView.setOnFocusChangeListener((view, hasFocus) -> {
-//                if (!hasFocus) {
-//                    onTextEditedHandler.accept(todoItem, textView.getText().toString());
-//                }
-//            });
-
+            //delete button func
             this.deleteBtn.setOnClickListener(view -> {
                 if (onDeleteButtonClicked == null) return;
                 onDeleteButtonClicked.accept(routeItem);
@@ -98,7 +79,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         public void setRouteItem(RouteItem routeItem) {
             this.routeItem = routeItem;
             this.textView.setText(routeItem.animal);
-            //this.checkBox.setChecked(todoItem.completed);
         }
 
     }
