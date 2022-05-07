@@ -60,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
             builder.setMessage("Are you sure you want to add " + value + " to the route?")
             .setPositiveButton("Yes", (dialogInterface, i) -> {
                 String currentId = "";
+                //String animalName = "";
                 Log.d("item on click", value);
 //                get the id of the animal
                 for (SearchItem animal: animals){
@@ -68,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
                         Log.d("Animal id for the name", "onCreate: " + currentId);
                     }
                 }
-                viewModel.createRouteItem(currentId);
+                viewModel.createRouteItem(currentId, value);
             })
             .setNegativeButton("No",null);
             AlertDialog alert = builder.create();

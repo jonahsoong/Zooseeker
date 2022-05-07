@@ -20,10 +20,10 @@ public interface RouteDao {
     @Query("SELECT * FROM `route_items` where `id`=:id")
     RouteItem get(long id);
 
-    @Query("SELECT * FROM `route_items` ORDER by `distance`")
+    @Query("SELECT * FROM `route_items`")
     List<RouteItem> getAll();
 
-    @Query("SELECT * FROM `route_items` ORDER by `distance`")
+    @Query("SELECT * FROM `route_items`")
     LiveData<List<RouteItem>> getAllLive();
 
 //    @Query("SELECT `order` + 1 FROM `todo_list_items` ORDER BY `order` DESC LIMIT 1")

@@ -1,4 +1,5 @@
 package com.example.zookeeper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,9 @@ import java.util.function.BiConsumer;
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
     private List<RouteItem> routeItems = Collections.emptyList();
     private Consumer<RouteItem> onCheckBoxClicked;
-    private Consumer<RouteItem> onDeleteButtonClicked;
+    private BiConsumer<RouteItem, TextView> onDeleteButtonClicked;
     private BiConsumer<RouteItem, String> onTextEditedHandler;
+    private TextView numAnimals;
 
     public void setRouteItems(List<RouteItem> newRouteItems) {
         this.routeItems.clear();
@@ -26,8 +28,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setOnDeleteButtonClicked(Consumer<RouteItem> onDeleteButtonClicked) {
+    public void setOnDeleteButtonClicked(BiConsumer<RouteItem, TextView> onDeleteButtonClicked, TextView numAnimals) {
         this.onDeleteButtonClicked = onDeleteButtonClicked;
+        this.numAnimals = numAnimals;
+      //  numAnimals = update;
+       // update.setText("Number of Exhibits: " + routeItems.size());
+       // Log.d("size", routeItems.size() + "");
     }
 
 
@@ -70,7 +76,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             //delete button func
             this.deleteBtn.setOnClickListener(view -> {
                 if (onDeleteButtonClicked == null) return;
-                onDeleteButtonClicked.accept(routeItem);
+                onDeleteButtonClicked.accept(routeItem, numAnimals);
+                //numAnimals.setText("" + routeItems.size());
             });
 
         }

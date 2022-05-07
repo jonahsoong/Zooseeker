@@ -22,8 +22,9 @@ public class RouteItem {
         this.location = location;
         this.distance = distance;
     }
-    public RouteItem(String animal){
+    public RouteItem(String animal, String databaseID){
         this.animal = animal;
+        this.databaseID = databaseID;
     }
     @Override
     public String toString() {
