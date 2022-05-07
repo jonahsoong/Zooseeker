@@ -36,7 +36,7 @@ public class RouteActivity extends AppCompatActivity {
         //Log.d("err", "loadText");
         toAddText.setText("");
         //Log.d("err", "setText");
-        viewModel.createRouteItem(text);
+        viewModel.createRouteItem(text, "");
         //Log.d("err", "createItem");
     }
 
