@@ -21,10 +21,12 @@ public class SearchItem {
     public String id = "";
     public List<String> tags;
     public String name = "";
-    SearchItem(String id, List<String> tags, String name){
+    public String kind = "";
+    SearchItem(String id, List<String> tags, String name, String kind){
         this.id = id;
         this.tags = tags;
         this.name = name;
+        this.kind = kind;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class SearchItem {
                 "id='" + id + '\'' +
                 ", tags=" + tags +
                 ", name='" + name + '\'' +
+                ", kind='" + kind + '\'' +
                 '}';
     }
 

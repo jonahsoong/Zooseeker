@@ -35,11 +35,13 @@ public class SearchActivity extends AppCompatActivity {
         animals =  SearchItem.loadJSON(this,"nodes.json");
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {
-            name.add(animal.name);
+            if (animal.kind.equals("exhibit"))
+                name.add(animal.name);
 //            filteredId.add(animal.id);
             for (String tag: animal.tags){
                 if (!tags.contains(tag)){
-                    tags.add(tag);
+                    if (animal.kind.equals("exhibit"))
+                        tags.add(tag);
                 }
             }
         }
@@ -94,7 +96,8 @@ public class SearchActivity extends AppCompatActivity {
 //                filteredId = new ArrayList<String>(id);
 //                filteredId = id;
                 for (SearchItem animal: animals) {
-                    name.add(animal.name);
+                    if (animal.kind.equals("exhibit"))
+                        name.add(animal.name);
                 }
                 if (!newText.isEmpty()) {
                     Log.d("filtered list before clear: ", name.toString());
@@ -122,7 +125,8 @@ public class SearchActivity extends AppCompatActivity {
                         for (SearchItem animal : animals) {
 //                        if the tags are in an animal and the animal is not already in the list we add it
                             if (animal.tags.contains(filteredTag) && !name.contains(animal.name)) {
-                                name.add(animal.name);
+                                if (animal.kind.equals("exhibit"))
+                                    name.add(animal.name);
                             }
                         }
                     }
