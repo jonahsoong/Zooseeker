@@ -33,8 +33,18 @@ public class RouteActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
-        for(String dir: route.get(1).directions){
-            Log.d("ABDDSS", dir);
+        ArrayList<String> vectors = gen.getNodes();
+        ArrayList<String> edge = gen.getEdge();
+        for(String s: vectors){
+            Log.d("BEEEE",s);
+        }
+        for(String b: edge){
+            Log.d("ROOOO",b);
+        }
+        for(RouteExhibitItem item: route){
+            for(String i :item.directions){
+                Log.d("ABDDSS", i);
+            }
         }
         adapter.setRouteExhibitItems(route);
         directionsButton.setOnClickListener( new View.OnClickListener(){

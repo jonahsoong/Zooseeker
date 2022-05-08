@@ -1,6 +1,7 @@
 package com.example.zookeeper;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -72,35 +73,80 @@ public class PathGenerator {
     }
 
     public ArrayList<RouteExhibitItem> getRoute(){
+
         int i = 0;
         ArrayList<RouteExhibitItem> output = new ArrayList<RouteExhibitItem>();
         //dummy route exhibit to show where you are currently
+        String lastIn = "";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
             String vName = vInfo.get(gr.getEndVertex()).name;
             double distance = 0;
-            if(!vName.equals("Entrance and Exit Gate")){
-                distance = gr.getWeight();
-                ArrayList<String> directions = new ArrayList<String>();
-                for(IdentifiedWeightedEdge e: gr.getEdgeList()){
-                    String intro = "Continue on ";
-                    if(directions.size() == 0 || vInfo.get(g.getEdgeTarget(e).toString()).name == vName){
-                        intro = "Proceed on ";
-                    }
-                    String direction = intro
-                            + eInfo.get(e.getId()).street + " "
-                            + g.getEdgeWeight(e) + " ft towards "
-                            + vInfo.get(g.getEdgeTarget(e).toString()).name;
-                    directions.add(direction);
+            distance = gr.getWeight();
+            ArrayList<String> directions = new ArrayList<String>();
+            List<IdentifiedWeightedEdge> edges = gr.getEdgeList();
+            List<String> vertices = gr.getVertexList();
+            for(IdentifiedWeightedEdge e : gr.getEdgeList()){
+                String intro = "Continue on ";
+                if(directions.size() == 0 || directions.size() == edges.size()){
+                    intro = "Proceed on ";
                 }
-                RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions);
-                output.add(temp);
+                String destination = "";
+                // big logic thing for parsing whether or not the source node is the last node
+                // we visited. allows us to navigate things bidirectionally, despite having
+                // source/target relationship in the data
+                if(!lastIn.equals("")){
+                    if(lastIn.equals(vInfo.get(g.getEdgeSource(e).toString()).name)){
+                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
+                    } else{
+                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
+                    }
+                } else {
+                    if(vInfo.get(g.getEdgeTarget(e).toString()).name.equals("Entrance and Exit Gate")){
+                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
+                    } else{
+                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
+                    }
+                }
+
+                lastIn = destination;
+
+                String direction = intro
+                        + eInfo.get(e.getId()).street + " "
+                        + g.getEdgeWeight(e) + " ft towards "
+                        + destination;
+                directions.add(direction);
             }
+            RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions);
+            output.add(temp);
+
 
 
 
         }
         return output;
 
+    }
+
+    public ArrayList<String> getNodes(){
+        ArrayList<String> boop = new ArrayList<>();
+        for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
+            for(String s: gr.getVertexList()){
+                boop.add(s);
+            }
+        }
+        return boop;
+    }
+
+    public ArrayList<String> getEdge(){
+        ArrayList<String> boop = new ArrayList<>();
+        for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
+            for(IdentifiedWeightedEdge s: gr.getEdgeList()){
+                boop.add(vInfo.get(g.getEdgeSource(s).toString()).name);
+                boop.add(vInfo.get(g.getEdgeTarget(s).toString()).name);
+
+            }
+        }
+        return boop;
     }
 
 }
