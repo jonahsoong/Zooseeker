@@ -6,7 +6,10 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -68,32 +71,38 @@ public class PathGenerator {
 
     }
 
-    public String[] getOrder(){
+    public ArrayList<RouteExhibitItem> getRoute(){
         int i = 0;
-        String[] order = new String[totalPath.size()-1];
-        double[] distance = new double[totalPath.size()-1];
-        for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
+        ArrayList<RouteExhibitItem> output = new ArrayList<RouteExhibitItem>();
+        //dummy route exhibit to show where you are currently
+        ArrayList<String> nondirections = new ArrayList<String>(Arrays.asList(""));
+        output.add(new RouteExhibitItem("Entrance Gate",0,nondirections));
+        for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
             String vName = vInfo.get(gr.getEndVertex()).name;
-            if(!vName.equals("Entrance and Exit Gate") && i != totalPath.size()-1){
-                distance[i] = gr.getWeight();
-                order[i] = vName;
+            double distance = 0;
+            if(!vName.equals("Entrance and Exit Gate")){
+                distance = gr.getWeight();
+                ArrayList<String> directions = new ArrayList<String>();
+                for(IdentifiedWeightedEdge e: gr.getEdgeList()){
+                    String intro = "Continue on ";
+                    if(directions.size() == 0 || vInfo.get(g.getEdgeTarget(e).toString()).name == vName){
+                        intro = "Proceed on ";
+                    }
+                    String direction = intro
+                            + eInfo.get(e.getId()).street + " "
+                            + g.getEdgeWeight(e) + " ft towards "
+                            + vInfo.get(g.getEdgeTarget(e).toString()).name;
+                    directions.add(direction);
+                }
+                RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions);
+                output.add(temp);
             }
-            i++;
-        }
-        return order;
-    }
 
-    public double[] getDist(){
-        int i = 0;
-        double[] distance = new double[totalPath.size()-1];
-        for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
-            String vName = vInfo.get(gr.getEndVertex()).name;
-            if(!vName.equals("Entrance and Exit Gate") && i != totalPath.size()-1){
-                distance[i] = gr.getWeight();
-            }
-            i++;
+
+
         }
-        return distance;
+        return output;
+
     }
 
 }
