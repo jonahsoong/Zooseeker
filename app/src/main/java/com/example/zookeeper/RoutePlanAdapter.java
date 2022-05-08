@@ -12,6 +12,7 @@ import java.util.List;
 
 public class RoutePlanAdapter extends RecyclerView.Adapter<RoutePlanAdapter.ViewHolder>{
     private List<RouteExhibitItem> routeItems = Collections.emptyList();
+    double prevDist = 0;
 
     public void setRouteExhibitItems(List<RouteExhibitItem> newRouteItems){
         this.routeItems.clear();
@@ -29,7 +30,9 @@ public class RoutePlanAdapter extends RecyclerView.Adapter<RoutePlanAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setRouteItem(routeItems.get(position));
+
+        holder.setRouteItem(routeItems.get(position), prevDist);
+        prevDist += routeItems.get(position).distance;
 
     }
 
@@ -54,10 +57,10 @@ public class RoutePlanAdapter extends RecyclerView.Adapter<RoutePlanAdapter.View
 
         public RouteExhibitItem getRouteItem() { return routeItem;}
 
-        public void setRouteItem(RouteExhibitItem routeItem){
+        public void setRouteItem(RouteExhibitItem routeItem, double prevDist){
             this.routeItem = routeItem;
             this.exhibitView.setText(routeItem.name);
-            this.distView.setText(routeItem.distance + "");
+            this.distView.setText((routeItem.distance+prevDist) + "ft");
         }
     }
 

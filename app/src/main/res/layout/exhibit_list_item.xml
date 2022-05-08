@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/exhibit_name_text"
-        android:layout_width="235dp"
-        android:layout_height="29dp"
+        android:layout_width="210dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Exhibit"
@@ -21,15 +21,16 @@
 
     <TextView
         android:id="@+id/exhibit_dist_text"
-        android:layout_width="139dp"
-        android:layout_height="28dp"
+        android:layout_width="163dp"
+        android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Distance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.979"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

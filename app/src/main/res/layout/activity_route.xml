@@ -11,18 +11,19 @@
         android:id="@+id/route_items"
         android:layout_width="499dp"
         android:layout_height="1014dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/get_directions_btn"
         android:layout_width="189dp"
         android:layout_height="49dp"
         android:text="Get Directions"
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="936dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
 </androidx.constraintlayout.widget.ConstraintLayout>
