@@ -26,6 +26,7 @@ public class SearchTest {
     @Test
     public void test_search() {
         List<String> name = new ArrayList<>();
+        name.add("Entrance and Exit Gate");
         name.add("Gorillas");
         name.add("Alligators");
         name.add("Lions");
