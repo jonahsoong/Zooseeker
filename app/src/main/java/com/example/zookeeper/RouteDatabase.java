@@ -27,10 +27,6 @@ public abstract class RouteDatabase extends RoomDatabase {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-//                        Executors.newSingleThreadExecutor().execute(() -> {
-//                            List<RouteItem> todos = TodoListItem.loadJSON(context, "demo_todos.json");
-//                            getSingleton(context).todoListItemDao().insertAll(todos);
-//                        });
                     }
                 })
                 .build();

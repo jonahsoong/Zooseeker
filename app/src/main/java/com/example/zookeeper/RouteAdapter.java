@@ -27,13 +27,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         this.routeItems = newRouteItems;
         notifyDataSetChanged();
     }
-
+    //pass in TextView to help update number of exhibits
     public void setOnDeleteButtonClicked(BiConsumer<RouteItem, TextView> onDeleteButtonClicked, TextView numAnimals) {
         this.onDeleteButtonClicked = onDeleteButtonClicked;
         this.numAnimals = numAnimals;
-      //  numAnimals = update;
-       // update.setText("Number of Exhibits: " + routeItems.size());
-       // Log.d("size", routeItems.size() + "");
     }
 
 
@@ -77,7 +74,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             this.deleteBtn.setOnClickListener(view -> {
                 if (onDeleteButtonClicked == null) return;
                 onDeleteButtonClicked.accept(routeItem, numAnimals);
-                //numAnimals.setText("" + routeItems.size());
             });
 
         }
