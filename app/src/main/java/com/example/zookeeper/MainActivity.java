@@ -19,12 +19,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
 //    public void open_route(View view) {
-//        Intent intent = new Intent(this,RouteActivity.class);
+//        Intent intent = new Intent(this,RoutePlanActivity.class);
 //        startActivity(intent);
 //    }
 }

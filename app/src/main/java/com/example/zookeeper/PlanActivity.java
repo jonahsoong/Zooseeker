@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,5 +46,11 @@ public class PlanActivity extends AppCompatActivity {
 
     public void onBackClicked(View view) {
         finish();
+    }
+
+
+    public void onGenerateClicked(View view) {
+        Intent intent = new Intent(this, RoutePlanActivity.class);
+        startActivity(intent);
     }
 }
