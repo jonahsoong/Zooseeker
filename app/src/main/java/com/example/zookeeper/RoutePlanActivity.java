@@ -28,7 +28,7 @@ public class RoutePlanActivity extends AppCompatActivity {
         this.directionsButton = this.findViewById(R.id.get_directions_btn);
         viewModel = viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
-        ArrayList<String> input = viewModel.getIds();
+        ArrayList<String> input = new ArrayList<>(viewModel.getIds());
         PathGenerator gen = new PathGenerator(this);
         RoutePlanAdapter adapter = new RoutePlanAdapter();
 

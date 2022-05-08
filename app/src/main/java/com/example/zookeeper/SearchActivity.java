@@ -153,6 +153,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void onPlanClicked(View view) {
         Intent intent = new Intent(this,PlanActivity.class);
+        Log.d("ids", viewModel.getIds().toString());
         startActivity(intent);
     }
 }

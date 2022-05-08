@@ -25,6 +25,8 @@ public class RouteItem {
     public RouteItem(String animal, String databaseID){
         this.animal = animal;
         this.databaseID = databaseID;
+        this.location = "unknown";
+        this.distance = 10;
     }
     @Override
     public String toString() {
