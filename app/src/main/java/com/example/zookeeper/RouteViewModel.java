@@ -9,6 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -52,6 +54,8 @@ public class RouteViewModel extends AndroidViewModel {
         RouteItem newItem = new RouteItem(name, id);
         routeDao.insert(newItem);
     }
+
+    public ArrayList<String> getIds() { return new ArrayList<>(Arrays.asList("lions", "gorillas", "gorillas", "gators", "arctic_foxes", "gorillas"));}
 //deletes an item, perhaps update animation?
     public void deleteTodo(RouteItem routeItem, TextView update) {
         routeDao.delete(routeItem);

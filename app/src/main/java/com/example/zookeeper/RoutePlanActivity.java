@@ -1,6 +1,7 @@
 package com.example.zookeeper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,14 +19,16 @@ import java.util.Arrays;
 public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private Button directionsButton;
+    private RouteViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         this.directionsButton = this.findViewById(R.id.get_directions_btn);
-
-        ArrayList<String> input = new ArrayList<>(Arrays.asList("lions", "gorillas", "gorillas", "gators", "arctic_foxes", "gorillas"));
+        viewModel = viewModel = new ViewModelProvider(this)
+                .get(RouteViewModel.class);
+        ArrayList<String> input = viewModel.getIds();
         PathGenerator gen = new PathGenerator(this);
         RoutePlanAdapter adapter = new RoutePlanAdapter();
 
