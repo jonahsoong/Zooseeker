@@ -75,8 +75,6 @@ public class PathGenerator {
         int i = 0;
         ArrayList<RouteExhibitItem> output = new ArrayList<RouteExhibitItem>();
         //dummy route exhibit to show where you are currently
-        ArrayList<String> nondirections = new ArrayList<String>(Arrays.asList(""));
-        output.add(new RouteExhibitItem("Entrance Gate",0,nondirections));
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
             String vName = vInfo.get(gr.getEndVertex()).name;
             double distance = 0;
