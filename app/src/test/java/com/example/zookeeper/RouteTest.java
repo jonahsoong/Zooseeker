@@ -84,21 +84,21 @@ public class RouteTest {
         assertEquals(dao.getAll().size(), i);
     }
 
-    @Test
-    public void testDuplicateInserts() {
-        MockView
-        ActivityScenario.launch(SearchActivity.class).onActivity{ activity ->
-            // do something with your activity instance
-        }
-    }
-    @Test
-    public void testDuplicateInserts(){
-
-        RouteViewModel viewModel = new RouteViewModel(new Application());
-
-        viewModel.createRouteItem("Elephant", "elephant");
-        viewModel.createRouteItem("Elephant", "elephant");
-
-        assertEquals(viewModel.getList().size(), 1);
-    }
+//    @Test
+//    public void testDuplicateInserts() {
+//        MockView
+//        ActivityScenario.launch(SearchActivity.class).onActivity{ activity ->
+//            // do something with your activity instance
+//        }
+//    }
+//    @Test
+//    public void testDuplicateInserts(){
+//
+//        RouteViewModel viewModel = new RouteViewModel(new Application());
+//
+//        viewModel.createRouteItem("Elephant", "elephant");
+//        viewModel.createRouteItem("Elephant", "elephant");
+//
+//        assertEquals(viewModel.getList().size(), 1);
+//    }
 }
