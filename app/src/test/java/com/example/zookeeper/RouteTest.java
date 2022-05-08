@@ -47,7 +47,7 @@ public class RouteTest {
     public void closeDb() throws IOException {
         db.close();
     }
-
+    //test insert
     @Test
     public void testInsert(){
         RouteItem item1 = new RouteItem("Elephant", "Sahara", 100);
