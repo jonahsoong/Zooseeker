@@ -1,5 +1,5 @@
 package com.example.zookeeper;
-
+//Obselete Class and Page!
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,15 +36,15 @@ public class RouteActivity extends AppCompatActivity {
         //Log.d("err", "loadText");
         toAddText.setText("");
         //Log.d("err", "setText");
-        viewModel.createRouteItem(text);
+        viewModel.createRouteItem(text, "");
         //Log.d("err", "createItem");
     }
 
     public void planButtonClicked(View view) {
-        List<RouteItem> planned = viewModel.getList();
-        Log.d("Planned", planned.toString());
-//        Intent intent = new Intent(this,PlanActivity.class);
-//        startActivity(intent);
+        //List<RouteItem> planned = viewModel.getList();
+       // Log.d("Planned", planned.toString());
+       Intent intent = new Intent(this,PlanActivity.class);
+        startActivity(intent);
     }
 
 }
