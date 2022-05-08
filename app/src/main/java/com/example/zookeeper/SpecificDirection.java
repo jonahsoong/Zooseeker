@@ -13,6 +13,8 @@ import android.widget.Button;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class SpecificDirection extends AppCompatActivity {
     private Button nextButton;
@@ -33,32 +35,23 @@ public class SpecificDirection extends AppCompatActivity {
                 Log.d("HELPMEOUTHERE", s);
         }
         this.nextButton = this.findViewById(R.id.Nextbutton);
-
+        Queue<ArrayList<String>> directions = new LinkedList<>();
+        for(RouteExhibitItem dr : route){
+            directions.add(dr.directions);
+        }
         DirectionAdapter adapter = new DirectionAdapter();
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setDirectionItems(route.get(currentDirection[0]).directions);
-        currentDirection[0] += 1;
+        adapter.setDirectionItems(directions.poll());
 
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(currentDirection[0] < route.size()-1) {
-                    Log.d("ROUTESIZE", route.size()+
-                            " ");
-                    Log.d("CURRENTDIRECTION", currentDirection[0]+
-                            " ");
-                    Log.d("SourceAnimal", route.get(currentDirection[0]).name+
-                            " ");
-                    adapter.setDirectionItems(route.get(currentDirection[0]).directions);
-                    currentDirection[0] += 1;
-                }
-                else {
+                if(!directions.isEmpty()){
+                    adapter.setDirectionItems(directions.poll());
+                } else{
                     nextButton.setEnabled(false);
-                }
-                for(String step : route.get(currentDirection[0]).directions){
-                    Log.d("HELPMEOUTHEREEEEEEEEEEEEEEEEEEEEEEEEEEEE", step);
                 }
             }
         });
