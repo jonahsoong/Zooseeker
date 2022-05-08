@@ -2,6 +2,7 @@ package com.example.zookeeper;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,17 +37,23 @@ public class RouteViewModel extends AndroidViewModel {
         return routeDao.getAll();
     }
 
+    public List<String> getIds(){
+        List<String> ids = new ArrayList<>();
+        for(RouteItem r : getList()){
+            ids.add(r.databaseID);
+        }
+        return ids;
+    }
+
 
     private void loadUsers() {
         routeItems = routeDao.getAllLive();
     }
-
+    //creates a RouteItem in db
     public void createRouteItem(String id, String name) {
-
-        //TODO: pull distances from JSON file and actual name!
         List<RouteItem> exist = routeDao.getAll();
+        //check
         for(RouteItem i : exist){
-            //existingIds.add(text);
             if(i.animal.equals(name))
                 return;
         }
