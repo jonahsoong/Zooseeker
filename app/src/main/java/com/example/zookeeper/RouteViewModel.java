@@ -2,20 +2,24 @@ package com.example.zookeeper;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 
+import java.util.HashSet;
 import java.util.List;
 
 public class RouteViewModel extends AndroidViewModel {
     private LiveData<List<RouteItem>> routeItems;
     private final RouteDao routeDao;
+    static HashSet<String> existingIds;
 
     public RouteViewModel(@NonNull Application application) {
         super(application);
+        //existingIds = new HashSet<>();
         Context context = getApplication().getApplicationContext();
         RouteDatabase db = RouteDatabase.getSingleton(context);
         routeDao = db.routeDao();
@@ -32,45 +36,26 @@ public class RouteViewModel extends AndroidViewModel {
     }
 
 
-//    public void toggleCompleted(RouteItem routeItem) {
-//        routeItem.completed = !routeItem.completed;
-//        RouteDao.update(routeItem);
-//    }
-
-//    public void updateText(TodoListItem todoListItem, String newText) {
-//        todoListItem.text = newText;
-//        todoListItemDao.update(todoListItem);
-//    }
-
     private void loadUsers() {
         routeItems = routeDao.getAllLive();
     }
 
-    public void createRouteItem(String text) {
-        String name = "";
-        String location = "";
-        int distance = 0;
-        int prev = 0;
-        int counter = 0;
-        //simple string parser, must not have spaces after comma(especially for distance!)
-        for(int i = 0; i < text.length(); i++){
-            if(text.charAt(i) == ',' || i == text.length()-1){
-                if(counter == 0)
-                    name = text.substring(prev, i);
-                else if(counter == 1 )
-                    location = text.substring(prev, i);
-                else
-                    distance = Integer.parseInt(text.substring(prev));
-                counter++;
-                prev = i+1;
-            }
+    public void createRouteItem(String id, String name) {
+
+        //TODO: pull distances from JSON file and actual name!
+        List<RouteItem> exist = routeDao.getAll();
+        for(RouteItem i : exist){
+            //existingIds.add(text);
+            if(i.animal.equals(name))
+                return;
         }
-        //int endOfListOrder = routeDao.getOrderForAppend();
-        RouteItem newItem = new RouteItem(name, location, distance);
+        RouteItem newItem = new RouteItem(name, id);
         routeDao.insert(newItem);
     }
-
-    public void deleteTodo(RouteItem routeItem) {
+//deletes an item, perhaps update animation?
+    public void deleteTodo(RouteItem routeItem, TextView update) {
         routeDao.delete(routeItem);
+        if(routeDao != null)
+            update.setText("Number of Exhibits: " + routeDao.getAll().size());
     }
 }
