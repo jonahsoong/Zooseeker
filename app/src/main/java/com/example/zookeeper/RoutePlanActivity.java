@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RouteActivity extends AppCompatActivity {
+public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private Button directionsButton;
 
@@ -24,9 +25,9 @@ public class RouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route);
         this.directionsButton = this.findViewById(R.id.get_directions_btn);
 
-        ArrayList<String> input = new ArrayList<>(Arrays.asList("lions","gorillas", "gorillas", "gators","arctic_foxes","gorillas"));
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("lions", "gorillas", "gorillas", "gators", "arctic_foxes", "gorillas"));
         PathGenerator gen = new PathGenerator(this);
-        RouteAdapter adapter = new RouteAdapter();
+        RoutePlanAdapter adapter = new RoutePlanAdapter();
 
         gen.generatePlan(input);
         recyclerView = findViewById(R.id.route_items);
@@ -35,32 +36,30 @@ public class RouteActivity extends AppCompatActivity {
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         ArrayList<String> vectors = gen.getNodes();
         ArrayList<String> edge = gen.getEdge();
-        for(String s: vectors){
-            Log.d("BEEEE",s);
+        for (String s : vectors) {
+            Log.d("BEEEE", s);
         }
-        for(String b: edge){
-            Log.d("ROOOO",b);
+        for (String b : edge) {
+            Log.d("ROOOO", b);
         }
-        for(RouteExhibitItem item: route){
-            for(String i :item.directions){
+        for (RouteExhibitItem item : route) {
+            for (String i : item.directions) {
                 Log.d("ABDDSS", i);
             }
         }
         adapter.setRouteExhibitItems(route);
-        directionsButton.setOnClickListener( new View.OnClickListener(){
+        directionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
                 //allows transferring data through Extras
                 Bundle b = new Bundle();
                 b.putSerializable("route_exhibits", (Serializable) route);
-                Intent intent = new Intent(RouteActivity.this,SpecificDirection.class);
+                Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);
             }
         });
 
     }
-
-
 }

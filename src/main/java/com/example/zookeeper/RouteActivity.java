@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RouteActivity extends AppCompatActivity {
+public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private Button directionsButton;
 
@@ -44,7 +44,7 @@ public class RouteActivity extends AppCompatActivity {
                 //allows transferring data through Extras
                 Bundle b = new Bundle();
                 b.putSerializable("route_exhibits", (Serializable) route);
-                Intent intent = new Intent(RouteActivity.this,SpecificDirection.class);
+                Intent intent = new Intent(RoutePlanActivity.this,SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);
             }

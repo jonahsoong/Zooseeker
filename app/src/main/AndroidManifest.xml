@@ -13,7 +13,13 @@
             android:name=".SpecificDirection"
             android:exported="false" />
         <activity
-            android:name=".RouteActivity"
+            android:name=".RoutePlanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlanActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
