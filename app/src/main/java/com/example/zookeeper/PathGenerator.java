@@ -21,7 +21,7 @@ public class PathGenerator {
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context,"node_info.json");
+        vInfo = ZooData.loadVertexInfoJSON(context,"nodes.json");
         eInfo = ZooData.loadEdgeInfoJSON(context,"edge_info.json");
         // 1. Load the graph...
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
