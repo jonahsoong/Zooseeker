@@ -15,9 +15,9 @@ import android.widget.TextView;
 import java.util.List;
 
 public class PlanActivity extends AppCompatActivity {
-    private RouteViewModel viewModel;
-    private RecyclerView recyclerView;
-    private TextView numAnimals;
+    RouteViewModel viewModel;
+    RecyclerView recyclerView;
+    TextView numAnimals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

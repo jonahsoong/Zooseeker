@@ -38,10 +38,12 @@ public class RouteViewModel extends AndroidViewModel {
         return routeDao.getAll();
     }
 
+
     public List<String> getIds(){
         List<String> ids = new ArrayList<>();
         for(RouteItem r : getList()){
-            ids.add(r.databaseID);
+            if(!r.databaseID.equals("entrance_exit_gate"))
+                ids.add(r.databaseID);
         }
         return ids;
     }
