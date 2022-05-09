@@ -6,23 +6,28 @@ import android.content.Context;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowApplication;
 
 import androidx.annotation.UiContext;
 import androidx.annotation.UiThread;
 import androidx.annotation.UiContext;
 import androidx.test.annotation.*;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+@RunWith(RobolectricTestRunner.class)
 public class PathGeneratorTest {
     Context appContext = null;
     PathGenerator path = null;
     @Before
     public void getContext(){
-        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        appContext = ApplicationProvider.getApplicationContext();
         path = new PathGenerator(appContext);
     }
     @Test
@@ -33,15 +38,13 @@ public class PathGeneratorTest {
         ArrayList<String> names= new ArrayList<>();
         ArrayList<Double> distances = new ArrayList<>();
         for(RouteExhibitItem i : result){
-            if(i.name != "Entrance Gate"){
-                names.add(i.name);
-                distances.add(i.distance);
-            }
+            names.add(i.name);
+            distances.add(i.distance);
         }
         String[] namesR = names.stream().toArray(String[]::new);
         double[] distancesR = distances.stream().mapToDouble(n->n).toArray();
-        double[] exDist = {110,200,200,500};
-        String[] expected = {"Alligators", "Lions", "Gorillas", "Arctic Foxes"};
+        double[] exDist = {110,200,200,500,310};
+        String[] expected = {"Alligators", "Lions", "Gorillas", "Arctic Foxes","Entrance and Exit Gate"};
         Assert.assertArrayEquals(expected, namesR);
         for(int k = 0; k < exDist.length; k ++){
             Assert.assertTrue(exDist[k] == distancesR[k]);
@@ -55,15 +58,13 @@ public class PathGeneratorTest {
         ArrayList<String> names= new ArrayList<>();
         ArrayList<Double> distances = new ArrayList<>();
         for(RouteExhibitItem i : result){
-            if(i.name != "Entrance Gate"){
-                names.add(i.name);
-                distances.add(i.distance);
-            }
+            names.add(i.name);
+            distances.add(i.distance);
         }
         String[] namesR = names.stream().toArray(String[]::new);
         double[] distancesR = distances.stream().mapToDouble(n->n).toArray();
-        String[] expected = {"Gorillas", "Lions", "Elephant Odyssey"};
-        double[] exDist = {210,200,200};
+        String[] expected = {"Gorillas", "Lions", "Elephant Odyssey","Entrance and Exit Gate"};
+        double[] exDist = {210,200,200,510};
         Assert.assertArrayEquals(expected, namesR);
         for(int k = 0; k < exDist.length; k ++){
             Assert.assertTrue(exDist[k] == distancesR[k]);
