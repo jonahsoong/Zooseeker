@@ -10,14 +10,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class PlanActivity extends AppCompatActivity {
     RouteViewModel viewModel;
     RecyclerView recyclerView;
     TextView numAnimals;
+    Button generatePlanBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,18 @@ public class PlanActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.route_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        this.generatePlanBtn = this.findViewById(R.id.generate_btn);
+        generatePlanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewModel.getIds().isEmpty()){
+                    finish();
+                } else {
+                    Intent intent = new Intent(PlanActivity.this, RoutePlanActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
 
 
