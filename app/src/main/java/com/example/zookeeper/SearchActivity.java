@@ -2,10 +2,8 @@ package com.example.zookeeper;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +23,8 @@ public class SearchActivity extends AppCompatActivity {
     List<String> name = new ArrayList<String>();
     List<String> tags = new ArrayList<String>();
 //    List<String> filteredId = new ArrayList<String>();
-    ArrayAdapter<String> arrayAdapter;
-    ArrayAdapter<String> originalIdsAd;
+    ArrayAdapter<String> tagsAdapter;
+    ArrayAdapter<String> nameAdapter;
     List<SearchItem> animals;
     private RouteViewModel viewModel;
 
@@ -80,10 +78,10 @@ public class SearchActivity extends AppCompatActivity {
             // assuming string and if you want to get the value on click of list item
             // do what you intend to do on click of listview row
         });
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,tags);
-        originalIdsAd = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, name);
+        tagsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,tags);
+        nameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, name);
 
-        listView.setAdapter(originalIdsAd);
+        listView.setAdapter(nameAdapter);
     }
 
     @Override
@@ -113,19 +111,26 @@ public class SearchActivity extends AppCompatActivity {
                     name.clear();
                     List<String> filteredTags = new ArrayList<String>();
 
-//                for (String tag: tags){
-//                    // filter out the tags with the user input
-//                    if(tag.contains(newText)){
-//                        filteredTags.add(tag);
-//                    }
-//                }
-//                filter the array of tags
-                    arrayAdapter.getFilter().filter(newText);
-//                add the tags filtered to a list
-                    for (int i = 0; i < arrayAdapter.getCount(); i++) {
-                        if (!filteredTags.contains(arrayAdapter.getItem(i)))
-                            filteredTags.add(arrayAdapter.getItem(i));
+                for (String tag: tags){
+                    // filter out the tags with the user input
+                    if(tag.indexOf(newText) != -1 && !filteredTags.contains(tag)){
+                        filteredTags.add(tag);
                     }
+                }
+////                filter the array of tags
+////                    tagsAdapter.getFilter().filter(newText);
+////                add the tags filtered to a list
+//                    for (int i = 0; i < tagsAdapter.getCount(); i++) {
+////                        for (String filteredTag: filteredTags){
+////                            if (filteredTag.indexOf(arrayAdapter.getItem(i)) == -1){
+////                                filteredTags.add(arrayAdapter.getItem(i));
+////                            }
+////                        }
+//                        Log.d("array adapter: ", tagsAdapter.getItem(i) + "\n");
+//                        if (!filteredTags.contains(tagsAdapter.getItem(i))) {
+//                            filteredTags.add(tagsAdapter.getItem(i));
+//                        }
+//                    }
 //                for (String tag: filteredTags){
 //                    Log.d("filteredTags" , tag);
 //                }
@@ -141,7 +146,7 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 }
 //                originalIdsAd.setNotifyOnChange(true);
-                listView.setAdapter(originalIdsAd);
+                listView.setAdapter(nameAdapter);
                 Log.d("input: ",newText + "\n");
                 Log.d("filtered list", name.toString() + "\n");
                 return false;
