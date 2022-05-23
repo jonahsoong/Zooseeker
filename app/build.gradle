@@ -31,9 +31,13 @@ android {
             includeAndroidResources = true
         }
     }
+
     buildFeatures {
         viewBinding true
     }
+
+    namespace 'com.example.zookeeper'
+
 }
 
 dependencies {
