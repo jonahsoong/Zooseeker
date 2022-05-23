@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
+//        Intent intent = new Intent(this, GoogleMapsActivity.class);
+//        startActivity(intent);
     }
 
 //    public void open_route(View view) {
