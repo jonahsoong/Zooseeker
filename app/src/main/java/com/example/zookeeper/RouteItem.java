@@ -16,12 +16,6 @@ public class RouteItem {
     String databaseID;
     double lat;
     double lng;
-    @Ignore
-//    public RouteItem(String animal, String location, int distance){
-//        this.animal = animal;
-//        this.location = location;
-//        this.distance = distance;
-//    }
     public RouteItem(String animal, String databaseID, double lat, double lng){
         this.animal = animal;
         this.databaseID = databaseID;

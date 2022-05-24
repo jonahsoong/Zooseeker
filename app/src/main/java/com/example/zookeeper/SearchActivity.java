@@ -40,6 +40,7 @@ public class SearchActivity extends AppCompatActivity {
                 .get(RouteViewModel.class);
         int index = 0;
         animals =  SearchItem.loadJSON(this,"zoo_node_info.json");
+        animalList = new Hashtable();
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {
             if (animal.kind.equals("exhibit") ||animal.kind.equals("gate")) {
