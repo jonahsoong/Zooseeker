@@ -47,8 +47,8 @@ public class PlanActivityTest {
         RouteDatabase.injectTestDatabase(testDb);
         routeDao = testDb.routeDao();
 
-        RouteItem item1 = new RouteItem("Elephant", "elephant");
-        RouteItem item2 = new RouteItem("Gorillas", "monkey");
+//        RouteItem item1 = new RouteItem("Elephant", "elephant");
+//        RouteItem item2 = new RouteItem("Gorillas", "monkey");
 
         numExhibitsText = "Number of Exhibits: 2";
         long id1 = routeDao.insert(item1);

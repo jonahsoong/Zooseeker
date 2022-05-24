@@ -69,36 +69,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        //Enable zoom controls.
-        {
-            UiSettings uiSettings = map.getUiSettings();
-            uiSettings.setZoomControlsEnabled(true);
-            //Add a marker between UCSD and the zoo and move the camera.
-            LatLng ucsdPosition = LatLngs.UCSD_LATLNG;
-            LatLng zooPosition = LatLngs.ZOO_LATLNG;
-            //Compute the midpoint between UCSD and the zoo
-            LatLng cameraPosition = new LatLng(
-                    (ucsdPosition.latitude+ zooPosition.latitude)/2,
-                    (ucsdPosition.longitude+ zooPosition.longitude)/2
-            );
-            //place pin on UCSD
-            map.addMarker(new MarkerOptions()
-                    .position(ucsdPosition)
-                    .title("UCSD"));
-
-            map.addMarker(new MarkerOptions()
-                    .position(zooPosition)
-                    .title("Zoo"));
-//            for (SearchItem animal: animals){
-//                map.addMarker(new MarkerOptions()
-//                        .position(animal.location)
-//                        .title(animal.name));
-//            }
-            //move the camera and zoom to the right level.
-            map.moveCamera(CameraUpdateFactory.newLatLng(cameraPosition));
-            map.moveCamera(CameraUpdateFactory.zoomTo(11.5f));
-        }
-
         //permissions setup
 //        if(permissionChecker.ensurePermissions())return;
 
@@ -119,6 +89,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         //listen for location updates
         {
+            var checkLoc = new LocationChecker(this);
             var provider = LocationManager.GPS_PROVIDER;
             var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             var locationListener = new LocationListener() {
@@ -126,13 +97,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 public void onLocationChanged(@NonNull Location location) {
                     Log.d("GoogleMapsActivity", String.format("Location changed: %s", location));
 
-                    var marker = new MarkerOptions()
-                            .position(new LatLng(
-                                    location.getLatitude(),
-                                    location.getLongitude()
-                            ))
-                            .title("Navigation Step");
-                    map.addMarker(marker);
+                    var lat = location.getLatitude();
+                    var lng = location.getLongitude();
+                    checkLoc.updateRoute(lat, lng);
+                    //DistanceChecker
 
                 }
             };
