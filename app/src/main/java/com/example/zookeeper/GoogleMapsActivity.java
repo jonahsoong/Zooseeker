@@ -26,13 +26,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.zookeeper.databinding.ActivityGoogleMapsBinding;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
 //    private final PermissionChecker permissionChecker = new PermissionChecker(this);
     private GoogleMap map;
     private ActivityGoogleMapsBinding binding;
-
+    private List<SearchItem> animals;
     private Location lastVisitedLocation;
     private final ActivityResultLauncher<String[]>requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), perms -> {
         perms.forEach((perm, isGranted) -> {
@@ -43,7 +44,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         binding = ActivityGoogleMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -51,6 +52,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         var mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        animals = SearchItem.loadJSON(this,"zoo_node_info.json");
     }
 
     /**
@@ -87,7 +89,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             map.addMarker(new MarkerOptions()
                     .position(zooPosition)
                     .title("Zoo"));
-
+//            for (SearchItem animal: animals){
+//                map.addMarker(new MarkerOptions()
+//                        .position(animal.location)
+//                        .title(animal.name));
+//            }
             //move the camera and zoom to the right level.
             map.moveCamera(CameraUpdateFactory.newLatLng(cameraPosition));
             map.moveCamera(CameraUpdateFactory.zoomTo(11.5f));

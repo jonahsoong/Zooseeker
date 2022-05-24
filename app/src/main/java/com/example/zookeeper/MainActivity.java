@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-       Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-//        Intent intent = new Intent(this, GoogleMapsActivity.class);
+//       Intent intent = new Intent(this, SearchActivity.class);
 //        startActivity(intent);
+        Intent intent = new Intent(this, GoogleMapsActivity.class);
+        startActivity(intent);
     }
 
 //    public void open_route(View view) {
