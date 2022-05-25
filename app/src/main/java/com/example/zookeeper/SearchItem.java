@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.RequiresPermission;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,11 +23,17 @@ public class SearchItem {
     public List<String> tags;
     public String name = "";
     public String kind = "";
-    SearchItem(String id, List<String> tags, String name, String kind){
+    public double lat;
+    public double lng;
+    public LatLng location;
+    SearchItem(String id, List<String> tags, String name, String kind, String lat, String lng){
         this.id = id;
         this.tags = tags;
         this.name = name;
         this.kind = kind;
+        this.lat = Double.parseDouble(lat);
+        this.lng = Double.parseDouble(lng);
+        location = new LatLng(this.lat,this.lng);
     }
 
     @Override
@@ -36,6 +43,9 @@ public class SearchItem {
                 ", tags=" + tags +
                 ", name='" + name + '\'' +
                 ", kind='" + kind + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", location=" + location +
                 '}';
     }
 

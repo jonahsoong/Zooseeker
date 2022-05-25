@@ -40,6 +40,7 @@ public class RouteViewModel extends AndroidViewModel {
 
 
     public List<String> getIds(){
+        //pass parent_ids
         List<String> ids = new ArrayList<>();
         for(RouteItem r : getList()){
             if(!r.databaseID.equals("entrance_exit_gate"))
@@ -53,14 +54,14 @@ public class RouteViewModel extends AndroidViewModel {
         routeItems = routeDao.getAllLive();
     }
     //creates a RouteItem in db
-    public void createRouteItem(String id, String name) {
+    public void createRouteItem(String id, String name, double lat, double lng) {
         List<RouteItem> exist = routeDao.getAll();
         //check
         for(RouteItem i : exist){
             if(i.animal.equals(name))
                 return;
         }
-        RouteItem newItem = new RouteItem(name, id);
+        RouteItem newItem = new RouteItem(name, id, lat, lng);
         routeDao.insert(newItem);
     }
 //deletes an item, perhaps update animation?

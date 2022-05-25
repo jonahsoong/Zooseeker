@@ -55,8 +55,8 @@ public class RouteTest {
     //test insert
     @Test
     public void testInsert(){
-        RouteItem item1 = new RouteItem("Elephant", "elephant");
-        RouteItem item2 = new RouteItem("Gorillas", "monkey");
+        RouteItem item1 = new RouteItem("Elephant", "elephant", 0, 0);
+        RouteItem item2 = new RouteItem("Gorillas", "monkey", 0 ,0);
 
         long id1 = dao.insert(item1);
         long id2 = dao.insert(item2);
@@ -65,7 +65,7 @@ public class RouteTest {
     }
     @Test
     public void testDelete() {
-        RouteItem item = new RouteItem("Elephant", "elephant");
+        RouteItem item = new RouteItem("Elephant", "elephant", 0, 0);
         long id = dao.insert(item);
 
         item = dao.get(id);
@@ -78,7 +78,7 @@ public class RouteTest {
     public void testMultipleInserts(){
         int i = 20;
         for(int j = 0; j < i; j++){
-            RouteItem item = new RouteItem("" + j , "" + j);
+            RouteItem item = new RouteItem("" + j , ""  , 0, 0);
             dao.insert(item);
         }
         assertEquals(dao.getAll().size(), i);

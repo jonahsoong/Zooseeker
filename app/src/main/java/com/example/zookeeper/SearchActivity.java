@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     ArrayAdapter<String> nameAdapter;
     List<SearchItem> animals;
     private RouteViewModel viewModel;
+    Hashtable<String, SearchItem> animalList;
 
 
 
@@ -37,11 +39,14 @@ public class SearchActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         int index = 0;
-        animals =  SearchItem.loadJSON(this,"nodes.json");
+        animals =  SearchItem.loadJSON(this, "exhibit_info.json");
+        animalList = new Hashtable();
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {
-            if (animal.kind.equals("exhibit") ||animal.kind.equals("gate"))
+            if (animal.kind.equals("exhibit") ||animal.kind.equals("gate")) {
                 name.add(animal.name);
+                animalList.put(animal.name, animal);
+            }
 //            filteredId.add(animal.id);
             for (String tag: animal.tags){
                 if (!tags.contains(tag)){
@@ -55,21 +60,25 @@ public class SearchActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
 //        takes in an adapter, a view and a position and uses them
         listView.setOnItemClickListener((adapter, v, position, arg3) -> {
-            String value = (String)adapter.getItemAtPosition(position);
+            String animalClickedName = (String)adapter.getItemAtPosition(position);
             AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
-            builder.setMessage("Are you sure you want to add " + value + " to the route?")
+            builder.setMessage("Are you sure you want to add " + animalClickedName + " to the route?")
             .setPositiveButton("Yes", (dialogInterface, i) -> {
-                String currentId = "";
+                String currentId = animalList.get(animalClickedName).id;
+                double lat = animalList.get(animalClickedName).lat;
+                double lng = animalList.get(animalClickedName).lng;
                 //String animalName = "";
-                Log.d("item on click", value);
+                Log.d("item on click", animalClickedName);
 //                get the id of the animal
-                for (SearchItem animal: animals){
-                    if (value.equals(animal.name)){
-                        currentId = animal.id;
-                        Log.d("Animal id for the name", "onCreate: " + currentId);
-                    }
-                }
-                viewModel.createRouteItem(currentId, value);
+//                for (SearchItem animal: animals){
+//                    if (animalClickedName.equals(animal.name)){
+//                        currentId = animal.id;
+//                        lat =
+//                        Log.d("Animal id for the name", "onCreate: " + currentId);
+//                        break;
+//                    }
+//                }
+                viewModel.createRouteItem(currentId, animalClickedName, lat, lng);
             })
             .setNegativeButton("No",null);
             AlertDialog alert = builder.create();
