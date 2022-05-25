@@ -1,16 +1,12 @@
 package com.example.zookeeper;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +17,10 @@ public class PathGenerator {
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context,"zoo_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(context,"edge_info.json");
+        vInfo = ZooData.loadVertexInfoJSON(context, "OldAssets/zoo_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(context, "OldAssets/edge_info.json");
         // 1. Load the graph...
-        g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
+        g = ZooData.loadZooGraphJSON(context, "OldAssets/zoo_graph.json");
         totalPath = new ArrayList<>();
     }
     public void generatePlan(ArrayList<String> input){

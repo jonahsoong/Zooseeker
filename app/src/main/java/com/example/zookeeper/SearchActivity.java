@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         int index = 0;
-        animals =  SearchItem.loadJSON(this,"zoo_node_info.json");
+        animals =  SearchItem.loadJSON(this, "zoo_node_info.json");
         animalList = new Hashtable();
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {

@@ -3,7 +3,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -16,13 +15,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.zookeeper.databinding.ActivityGoogleMapsBinding;
 
 import java.util.Arrays;
@@ -52,7 +47,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         var mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        animals = SearchItem.loadJSON(this,"zoo_node_info.json");
+        animals = SearchItem.loadJSON(this, "OldAssets/zoo_node_info.json");
     }
 
     /**
