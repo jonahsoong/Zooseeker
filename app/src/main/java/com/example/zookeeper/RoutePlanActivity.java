@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
@@ -39,12 +41,14 @@ public class RoutePlanActivity extends AppCompatActivity {
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         ArrayList<String> vectors = gen.getNodes();
         ArrayList<String> edge = gen.getEdge();
+        Map<String, Pair<Double, Double>> location = gen.getLocation();
         for (String s : vectors) {
             Log.d("BEEEE", s);
         }
         for (String b : edge) {
             Log.d("ROOOO", b);
         }
+
         for (RouteExhibitItem item : route) {
             for (String i : item.directions) {
                 Log.d("ABDDSS", i);

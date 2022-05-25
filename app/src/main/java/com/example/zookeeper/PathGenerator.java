@@ -2,12 +2,17 @@ package com.example.zookeeper;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.w3c.dom.Node;
 
+import java.io.*;
+import java.util.*;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,13 +26,16 @@ public class PathGenerator {
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context,"nodes.json");
-        eInfo = ZooData.loadEdgeInfoJSON(context,"edge_info.json");
+        vInfo = ZooData.loadVertexInfoJSON(context,"exhibit_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(context,"trail_info.json");
         // 1. Load the graph...
-        g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
+        g = ZooData.loadZooGraphJSON(context,"zoo_graph1.json");
         totalPath = new ArrayList<>();
+
     }
+
     public void generatePlan(ArrayList<String> input){
+
         // "source" and "sink" are graph terms for the start and end
 
         //assume input will come as List<String> format
@@ -146,7 +154,25 @@ public class PathGenerator {
 
             }
         }
+
+
         return boop;
+
     }
+
+    public Map<String,Pair<Double, Double>> getLocation(){
+        Map<String, Pair<Double, Double>> res = new HashMap<>();
+        ArrayList<String>NodesName = this.getNodes();
+        for(String s : NodesName){
+            for(ZooData.VertexInfo info : vInfo.values()){
+                if(s == info.name){
+                    Pair<Double, Double> lo= new Pair<>(info.lat, info.lng);
+                    res.put(info.name, lo);
+                }
+            }
+        }
+        return res;
+    }
+
 
 }
