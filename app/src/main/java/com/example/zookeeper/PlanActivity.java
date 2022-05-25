@@ -30,17 +30,20 @@ public class PlanActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
 
+        //set number of animals textview
         numAnimals = this.findViewById(R.id.num_animals);
         numAnimals.setText("Number of Exhibits: " + viewModel.getList().size());
 
         RouteAdapter adapter = new RouteAdapter();
         adapter.setHasStableIds(true);
+        //initialize delete button and store numAnimals text view when delete is clicked
         adapter.setOnDeleteButtonClicked(viewModel::deleteTodo, numAnimals);
         viewModel.getRoute().observe(this, adapter::setRouteItems);
         //set view to text
         recyclerView = findViewById(R.id.route_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        //start the plan
         this.generatePlanBtn = this.findViewById(R.id.generate_btn);
         generatePlanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +57,14 @@ public class PlanActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
+    //back to search
     public void onBackClicked(View view) {
         finish();
     }
 
-
+    //generate plan
     public void onGenerateClicked(View view) {
         Intent intent = new Intent(this, RoutePlanActivity.class);
         startActivity(intent);
