@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.jgrapht.alg.util.Pair;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class SpecificDirection extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class SpecificDirection extends AppCompatActivity {
         //passes ArrayList<POJO> through to this activity
         Bundle b = getIntent().getExtras();
         ArrayList<RouteExhibitItem> route = (ArrayList<RouteExhibitItem>) b.getSerializable("route_exhibits");
+        Map<String, Pair<Double,Double>> location = (Map<String, Pair<Double,Double>>) b.getSerializable("location_exhibits");
         for(RouteExhibitItem step : route){
             for(String s : step.directions)
                 Log.d("HELPMEOUTHERE", s);

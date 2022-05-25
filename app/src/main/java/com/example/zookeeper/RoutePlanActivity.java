@@ -5,11 +5,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jgrapht.alg.util.Pair;
+
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 
@@ -39,21 +40,8 @@ public class RoutePlanActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
-        ArrayList<String> vectors = gen.getNodes();
-        ArrayList<String> edge = gen.getEdge();
         Map<String, Pair<Double, Double>> location = gen.getLocation();
-        for (String s : vectors) {
-            Log.d("BEEEE", s);
-        }
-        for (String b : edge) {
-            Log.d("ROOOO", b);
-        }
 
-        for (RouteExhibitItem item : route) {
-            for (String i : item.directions) {
-                Log.d("ABDDSS", i);
-            }
-        }
         adapter.setRouteExhibitItems(route);
         directionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +50,7 @@ public class RoutePlanActivity extends AppCompatActivity {
                 //allows transferring data through Extras
                 Bundle b = new Bundle();
                 b.putSerializable("route_exhibits", (Serializable) route);
+                b.putSerializable("location_exhibits", (Serializable) location);
                 Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);
