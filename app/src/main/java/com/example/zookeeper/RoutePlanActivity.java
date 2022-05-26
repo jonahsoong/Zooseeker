@@ -32,6 +32,7 @@ public class RoutePlanActivity extends AppCompatActivity {
         viewModel = viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         ArrayList<String> input = new ArrayList<>(viewModel.getIds());
+        input.add(0,"entrance_exit_gate");
         for(String i : input){
             Log.i("TEST", i);
         }

@@ -66,7 +66,7 @@ public class PathGenerator {
                     // if the source is not at the beginning of the route, then this
                     // finds the node before your replan, and forces a shortest path
                     // from that node to the node you are closest to
-                    if(source != "entrance_and_exit_gate"){
+                    if(source != "entrance_exit_gate"){
                         String prev = totalPath.get(i-1).getStartVertex();
                         totalPath.remove(i-1);
                         totalPath.add(DijkstraShortestPath.findPathBetween(g, source, prev));
@@ -76,14 +76,6 @@ public class PathGenerator {
             }
         }
         boolean[] isVisited = new boolean[input.size()];
-
-
-
-
-
-
-
-
         for(int i = 0; i < input.size(); i++){
             double weight = 1000000;
             //values to be stored after inner loop completes
