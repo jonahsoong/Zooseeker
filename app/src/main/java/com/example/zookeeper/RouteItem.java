@@ -12,36 +12,18 @@ public class RouteItem {
     public long id;
     @NonNull
     String animal;
-    //to be implemented later, needed to route generation
+    //equivalent to parent_id
     String databaseID;
-    String location;
-    int distance;
-    @Ignore
-    public RouteItem(String animal, String location, int distance){
-        this.animal = animal;
-        this.location = location;
-        this.distance = distance;
-    }
-    public RouteItem(String animal, String databaseID){
+    //location of each exhibit item
+    double lat;
+    double lng;
+    //constructor for RouteItem
+    public RouteItem(String animal, String databaseID, double lat, double lng){
         this.animal = animal;
         this.databaseID = databaseID;
-        this.location = "unknown";
-        this.distance = 10;
+        this.lat = lat;
+        this.lng = lng;
     }
-    @Override
-    public String toString() {
-        return "RouteItem{" +
-                "animal='" + animal + '\'' +
-                ", location='" + location + '\'' +
-                ", distance=" + distance +
-                '}';
-    }
-//    public RouteItem(String animal, String location, int order){
-//        this.animal = animal;
-//        this.location = location;
-//        this.order = order;
-//        this
-//    }
 
 
 }

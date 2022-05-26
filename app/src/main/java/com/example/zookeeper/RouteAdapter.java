@@ -111,11 +111,12 @@ import java.util.function.BiConsumer;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
     private List<RouteItem> routeItems = Collections.emptyList();
-    private Consumer<RouteItem> onCheckBoxClicked;
+    //delete button and numAnimal TextView
     private BiConsumer<RouteItem, TextView> onDeleteButtonClicked;
     private BiConsumer<RouteItem, String> onTextEditedHandler;
     private TextView numAnimals;
 
+    //update Route Items
     public void setRouteItems(List<RouteItem> newRouteItems) {
         this.routeItems.clear();
         this.routeItems = newRouteItems;
@@ -130,6 +131,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     @NonNull
     @Override
+    //creates viewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
@@ -144,6 +146,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
     @Override
+    //get number of items
     public int getItemCount() {
         return routeItems.size();
     }
@@ -155,7 +158,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
-        //private final CheckBox checkBox;
         private final TextView deleteBtn;
         private RouteItem routeItem;
 

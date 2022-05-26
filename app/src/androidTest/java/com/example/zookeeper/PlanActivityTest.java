@@ -47,8 +47,8 @@ public class PlanActivityTest {
         RouteDatabase.injectTestDatabase(testDb);
         routeDao = testDb.routeDao();
 
-        RouteItem item1 = new RouteItem("Elephant", "elephant");
-        RouteItem item2 = new RouteItem("Gorillas", "monkey");
+        RouteItem item1 = new RouteItem("Elephant", "elephant", 0, 0);
+        RouteItem item2 = new RouteItem("Gorillas", "monkey", 0 ,0);
 
         numExhibitsText = "Number of Exhibits: 2";
         long id1 = routeDao.insert(item1);
@@ -124,7 +124,7 @@ public class PlanActivityTest {
         scenario.onActivity(activity -> {
             RouteViewModel viewModel = activity.viewModel;
 
-            viewModel.createRouteItem("elephant", "Elephant");
+            viewModel.createRouteItem("elephant", "Elephant",0,0);
 
             TextView numExhibits = activity.numAnimals;
 
@@ -143,7 +143,7 @@ public class PlanActivityTest {
         scenario.onActivity(activity -> {
             RouteViewModel viewModel = activity.viewModel;
 
-            viewModel.createRouteItem("elephant_odyssey", "Elephant Odyssey");
+            viewModel.createRouteItem("elephant_odyssey", "Elephant Odyssey",0,0);
 
             assertEquals(3, routeDao.getAll().size());
         });
