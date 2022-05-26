@@ -6,12 +6,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.util.Pair;
-import org.w3c.dom.Node;
 
-import java.io.*;
 import java.util.*;
-import java.io.Serializable;
-import java.lang.reflect.Array;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +18,24 @@ public class PathGenerator {
     private Map<String, ZooData.EdgeInfo> eInfo;
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
+    // for user story #73 Detailed Directions
+    private ArrayList<ArrayList<String>> detailedDirections;
+    private ArrayList<ArrayList<String>> simpleDirections;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
         vInfo = ZooData.loadVertexInfoJSON(context,"exhibit_info.json");
         eInfo = ZooData.loadEdgeInfoJSON(context,"trail_info.json");
         // 1. Load the graph...
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
-
+        //conditional values
         totalPath = new ArrayList<>();
+        detailedDirections = new ArrayList<>();
+        simpleDirections = new ArrayList<>();
 
     }
 
     public void generatePlan(ArrayList<String> input){
-
+        // ensure that input ArrayList's first element is the starting element in the entire list.
         // "source" and "sink" are graph terms for the start and end
 
         //assume input will come as List<String> format
@@ -46,12 +47,43 @@ public class PathGenerator {
                 }
             }
         }
-        boolean[] isVisited = new boolean[input.size()];
-        String start = "entrance_exit_gate";
-
         GraphPath<String, IdentifiedWeightedEdge> path;
 
-        String source = "entrance_exit_gate";
+        boolean[] isVisited = new boolean[input.size()];
+        // assign the source node to the starting element,
+        // need that to be entrance_exit_gate for initial plan
+        String source = input.get(0);;
+        // we want to be able to revise a path without completely getting rid of it
+        // so we need to know whether or not this is a replan or a first plan
+        // when the totalPlan is not empty, we know that at least one plan has been
+        // generated, so we can delete any GraphPath's after the GraphPath where
+        // the last replan node is the source.
+        if(!totalPath.isEmpty()){
+            for(int i = 0; i < totalPath.size(); i++){
+                if(totalPath.get(i).getStartVertex() == source){
+                    for(int j = totalPath.size()-1; j >= i; j--){
+                        totalPath.remove(j);
+                    }
+                    // if the source is not at the beginning of the route, then this
+                    // finds the node before your replan, and forces a shortest path
+                    // from that node to the node you are closest to
+                    if(source != "entrance_and_exit_gate"){
+                        String prev = totalPath.get(i-1).getStartVertex();
+                        totalPath.remove(i-1);
+                        totalPath.add(DijkstraShortestPath.findPathBetween(g, source, prev));
+                    }
+                    break;
+                }
+            }
+        }
+
+
+
+
+
+
+
+
         for(int i = 0; i < input.size(); i++){
             double weight = 1000000;
             //values to be stored after inner loop completes
@@ -75,8 +107,8 @@ public class PathGenerator {
             isVisited[lowIndex] = true;
             source = src;
         }
-        totalPath.add(DijkstraShortestPath.findPathBetween(g,source,start));
-
+        // the last path is always from wherever you are to the exit gate, so this is hardcoded
+        totalPath.add(DijkstraShortestPath.findPathBetween(g,source,"entrance_exit_gate"));
     }
 
     public ArrayList<RouteExhibitItem> getRoute(){
@@ -125,9 +157,6 @@ public class PathGenerator {
             }
             RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions);
             output.add(temp);
-
-
-
 
         }
         return output;

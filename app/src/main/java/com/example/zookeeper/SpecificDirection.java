@@ -31,9 +31,15 @@ public class SpecificDirection extends AppCompatActivity {
         setContentView(R.layout.activity_specific_direction);
         //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
         //passes ArrayList<POJO> through to this activity
+        //retrieves data for generating route. convenient to have full PathGenerator object for replanning.
         Bundle b = getIntent().getExtras();
-        ArrayList<RouteExhibitItem> route = (ArrayList<RouteExhibitItem>) b.getSerializable("route_exhibits");
-        Map<String, Pair<Double,Double>> location = (Map<String, Pair<Double,Double>>) b.getSerializable("location_exhibits");
+        ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
+        PathGenerator gen = new PathGenerator(this);
+        gen.generatePlan(input);
+        ArrayList<RouteExhibitItem> route = gen.getRoute();
+
+
+
         for(RouteExhibitItem step : route){
             for(String s : step.directions)
                 Log.d("HELPMEOUTHERE", s);

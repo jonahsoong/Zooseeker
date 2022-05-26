@@ -49,8 +49,7 @@ public class RoutePlanActivity extends AppCompatActivity {
                 //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
                 //allows transferring data through Extras
                 Bundle b = new Bundle();
-                b.putSerializable("route_exhibits", (Serializable) route);
-                b.putSerializable("location_exhibits", (Serializable) location);
+                b.putSerializable("route_exhibits", (Serializable) input);
                 Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);
