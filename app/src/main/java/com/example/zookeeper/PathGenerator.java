@@ -1,6 +1,7 @@
 package com.example.zookeeper;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -48,8 +49,6 @@ public class PathGenerator {
             }
         }
         GraphPath<String, IdentifiedWeightedEdge> path;
-
-        boolean[] isVisited = new boolean[input.size()];
         // assign the source node to the starting element,
         // need that to be entrance_exit_gate for initial plan
         String source = input.get(0);;
@@ -76,6 +75,7 @@ public class PathGenerator {
                 }
             }
         }
+        boolean[] isVisited = new boolean[input.size()];
 
 
 
@@ -93,6 +93,7 @@ public class PathGenerator {
             for(int j = 0; j < input.size(); j++){
                 if(!isVisited[j]){
                     //finds path from node to node
+                    Log.i("TEST" , "" + j);
                     path = DijkstraShortestPath.findPathBetween(g, source, input.get(j));
                     if(path.getWeight() < weight){
                         weight = path.getWeight();

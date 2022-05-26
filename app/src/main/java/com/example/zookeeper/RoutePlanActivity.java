@@ -32,6 +32,10 @@ public class RoutePlanActivity extends AppCompatActivity {
         viewModel = viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         ArrayList<String> input = new ArrayList<>(viewModel.getIds());
+        for(String i : input){
+            Log.i("TEST", i);
+        }
+
         PathGenerator gen = new PathGenerator(this);
         RoutePlanAdapter adapter = new RoutePlanAdapter();
 
