@@ -58,22 +58,34 @@ public class PathGenerator {
         // generated, so we can delete any GraphPath's after the GraphPath where
         // the last replan node is the source.
         if(!totalPath.isEmpty()){
-            for(int i = 0; i < totalPath.size(); i++){
-                if(totalPath.get(i).getStartVertex() == source){
-                    for(int j = totalPath.size()-1; j >= i; j--){
-                        totalPath.remove(j);
+            //removes all paths that begin with a node we have not visited
+            //and removes the path back to the entrance gate
+            //what remains should be all traversed paths, plus whatever path starts
+            //with the new closest node at input.get(0)
+            for(int m = 1; m < input.size(); m++){
+                String s = input.get(m);
+                for(int k = 0; k < totalPath.size(); k++){
+                    if(totalPath.get(k).getStartVertex() == s){
+                        totalPath.remove(k);
+                        k--;
                     }
-                    // if the source is not at the beginning of the route, then this
-                    // finds the node before your replan, and forces a shortest path
-                    // from that node to the node you are closest to
-                    if(source != "entrance_exit_gate"){
-                        String prev = totalPath.get(i-1).getStartVertex();
-                        totalPath.remove(i-1);
-                        totalPath.add(DijkstraShortestPath.findPathBetween(g, source, prev));
+                    if(totalPath.get(k).getEndVertex() == "entrance_exit_gate"){
+                        totalPath.remove(k);
+                        k--;
                     }
-                    break;
                 }
             }
+
+            //finds the path which occurs just before the desired first position
+            //stores the start vertex value and deletes the path
+
+            String temp = totalPath.get(totalPath.size()-1).getStartVertex();
+            totalPath.remove(totalPath.size()-1);
+
+            //connects a shortest path between the last visited vertex
+            //and the desired first position
+            totalPath.add(DijkstraShortestPath.findPathBetween(g,temp,source));
+            input.remove(0);
         }
         boolean[] isVisited = new boolean[input.size()];
         for(int i = 0; i < input.size(); i++){
