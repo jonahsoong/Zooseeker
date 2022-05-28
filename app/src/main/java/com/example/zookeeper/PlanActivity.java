@@ -38,6 +38,7 @@ public class PlanActivity extends AppCompatActivity {
         adapter.setHasStableIds(true);
         //initialize delete button and store numAnimals text view when delete is clicked
         adapter.setOnDeleteButtonClicked(viewModel::deleteTodo, numAnimals);
+
         viewModel.getRoute().observe(this, adapter::setRouteItems);
         //set view to text
         recyclerView = findViewById(R.id.route_items);
@@ -68,5 +69,13 @@ public class PlanActivity extends AppCompatActivity {
     public void onGenerateClicked(View view) {
         Intent intent = new Intent(this, RoutePlanActivity.class);
         startActivity(intent);
+    }
+    //clear all
+    public void onClearButtonClicked(View view){
+        TextView num = findViewById(R.id.num_animals);
+        viewModel.deleteAll(num);
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+
     }
 }
