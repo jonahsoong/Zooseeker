@@ -36,14 +36,12 @@ public class SpecificDirection extends AppCompatActivity {
         ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
         PathGenerator gen = new PathGenerator(this);
         gen.generatePlan(input);
+
         ArrayList<RouteExhibitItem> route = gen.getRoute();
-
-
-
         this.nextButton = this.findViewById(R.id.Nextbutton);
         Queue<ArrayList<String>> directions = new LinkedList<>();
         for(RouteExhibitItem dr : route){
-            directions.add(dr.directions);
+            directions.add(dr.directionsDetailed);
         }
         // bug with first set of directions being empty
         // this fixes reliably but don't know why that happens

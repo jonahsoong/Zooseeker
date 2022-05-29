@@ -46,6 +46,8 @@ public class RoutePlanActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         Map<String, Pair<Double, Double>> location = gen.getLocation();
+        ArrayList<String> vectors = gen.getNodes();
+        ArrayList<String> edge = gen.getEdge();
 
         adapter.setRouteExhibitItems(route);
         directionsButton.setOnClickListener(new View.OnClickListener() {

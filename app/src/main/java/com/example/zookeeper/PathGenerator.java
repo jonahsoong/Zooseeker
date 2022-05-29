@@ -61,6 +61,7 @@ public class PathGenerator {
         }
 
         GraphPath<String, IdentifiedWeightedEdge> path;
+
         // assign the source node to the starting element,
         // need that to be entrance_exit_gate for initial plan
         String source = input.get(0);;
@@ -94,6 +95,11 @@ public class PathGenerator {
             String temp = totalPath.get(totalPath.size()-1).getStartVertex();
             totalPath.remove(totalPath.size()-1);
 
+        for(String s:input){
+            Log.d("HEWLO", s);
+        }
+
+
             //connects a shortest path between the last visited vertex
             //and the desired first position
             totalPath.add(DijkstraShortestPath.findPathBetween(g,temp,source));
@@ -109,7 +115,8 @@ public class PathGenerator {
             for(int j = 0; j < input.size(); j++){
                 if(!isVisited[j]){
                     //finds path from node to node
-                    Log.i("TEST" , "" + j);
+
+                    Log.d("HELP", input.get(j));
                     path = DijkstraShortestPath.findPathBetween(g, source, input.get(j));
                     if(path.getWeight() < weight){
                         weight = path.getWeight();
@@ -138,12 +145,13 @@ public class PathGenerator {
             String vName = vInfo.get(gr.getEndVertex()).name;
             double distance = 0;
             distance = gr.getWeight();
-            ArrayList<String> directions = new ArrayList<String>();
+            ArrayList<String> directions1 = new ArrayList<String>();
+            ArrayList<String> directions2 = new ArrayList<String>();
             List<IdentifiedWeightedEdge> edges = gr.getEdgeList();
             List<String> vertices = gr.getVertexList();
             for(IdentifiedWeightedEdge e : gr.getEdgeList()){
                 String intro = "Continue on ";
-                if(directions.size() == 0 || directions.size() == edges.size()){
+                if(directions1.size() == 0 || directions1.size() == edges.size()){
                     intro = "Proceed on ";
                 }
                 String destination = "";
@@ -151,13 +159,13 @@ public class PathGenerator {
                 // we visited. allows us to navigate things bidirectionally, despite having
                 // source/target relationship in the data
                 if(!lastIn.equals("")){
-                    if(lastIn.equals(vInfo.get(g.getEdgeSource(e).toString()).name)){
+                    if(lastIn.contains(vInfo.get(g.getEdgeSource(e).toString()).name)){
                         destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
                     } else{
                         destination = vInfo.get(g.getEdgeSource(e).toString()).name;
                     }
                 } else {
-                    if(vInfo.get(g.getEdgeTarget(e).toString()).name.equals("Entrance and Exit Gate")){
+                    if(vInfo.get(g.getEdgeTarget(e).toString()).name.contains("Entrance and Exit Gate")){
                         destination = vInfo.get(g.getEdgeSource(e).toString()).name;
                     } else{
                         destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
@@ -170,9 +178,9 @@ public class PathGenerator {
                         + eInfo.get(e.getId()).street + " "
                         + g.getEdgeWeight(e) + " ft towards "
                         + destination;
-                directions.add(direction);
+                directions1.add(direction);
             }
-            RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions);
+            RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions1,directions2);
             output.add(temp);
 
         }
