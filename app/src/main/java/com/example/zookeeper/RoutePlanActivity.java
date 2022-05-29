@@ -39,17 +39,7 @@ public class RoutePlanActivity extends AppCompatActivity {
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         ArrayList<String> vectors = gen.getNodes();
         ArrayList<String> edge = gen.getEdge();
-        for (String s : vectors) {
-            Log.d("BEEEE", s);
-        }
-        for (String b : edge) {
-            Log.d("ROOOO", b);
-        }
-        for (RouteExhibitItem item : route) {
-            for (String i : item.directions) {
-                Log.d("ABDDSS", i);
-            }
-        }
+
         adapter.setRouteExhibitItems(route);
         directionsButton.setOnClickListener(new View.OnClickListener() {
             @Override

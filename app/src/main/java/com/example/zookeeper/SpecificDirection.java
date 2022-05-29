@@ -31,13 +31,13 @@ public class SpecificDirection extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ArrayList<RouteExhibitItem> route = (ArrayList<RouteExhibitItem>) b.getSerializable("route_exhibits");
         for(RouteExhibitItem step : route){
-            for(String s : step.directions)
+            for(String s : step.directionsDetailed)
                 Log.d("HELPMEOUTHERE", s);
         }
         this.nextButton = this.findViewById(R.id.Nextbutton);
         Queue<ArrayList<String>> directions = new LinkedList<>();
         for(RouteExhibitItem dr : route){
-            directions.add(dr.directions);
+            directions.add(dr.directionsDetailed);
         }
         DirectionAdapter adapter = new DirectionAdapter();
         recyclerView = findViewById(R.id.direction_items);
