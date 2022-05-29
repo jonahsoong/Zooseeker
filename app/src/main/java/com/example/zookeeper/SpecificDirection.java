@@ -39,9 +39,6 @@ public class SpecificDirection extends AppCompatActivity {
         ArrayList<RouteExhibitItem> route = gen.getRoute();
 
 
-        for(String r : route.get(0).directions){
-            Log.d("TESTER",r);
-        }
 
         this.nextButton = this.findViewById(R.id.Nextbutton);
         Queue<ArrayList<String>> directions = new LinkedList<>();
@@ -70,9 +67,6 @@ public class SpecificDirection extends AppCompatActivity {
             }
         });
 
-        //  for(String step : route.get(currentDirection[0]).directions){
-        //      Log.d("HELPMEOUTHERE", step);
-        //  }
 
 
     }
