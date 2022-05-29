@@ -39,7 +39,17 @@ public class PathGenerator {
     public void generatePlan(ArrayList<String> input){
         // ensure that input ArrayList's first element is the starting element in the entire list.
         // "source" and "sink" are graph terms for the start and end
-
+        // find grouped exhibits and replace them with their parent exhibit
+        int l = 0;
+        for(String s : input){
+            if(vInfo.get(s).group_id != null){
+                input.set(l,vInfo.get(s).group_id);
+            }
+            l++;
+        }
+        for(String x : input){
+            Log.i("help",x);
+        }
         //assume input will come as List<String> format
         //check and delete duplicates
         for(int j = 0; j < input.size();j++){
@@ -49,6 +59,7 @@ public class PathGenerator {
                 }
             }
         }
+
         GraphPath<String, IdentifiedWeightedEdge> path;
         // assign the source node to the starting element,
         // need that to be entrance_exit_gate for initial plan

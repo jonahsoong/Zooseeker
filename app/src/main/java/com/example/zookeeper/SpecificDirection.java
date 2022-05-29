@@ -39,16 +39,20 @@ public class SpecificDirection extends AppCompatActivity {
         ArrayList<RouteExhibitItem> route = gen.getRoute();
 
 
-
-        for(RouteExhibitItem step : route){
-            for(String s : step.directions)
-                Log.d("HELPMEOUTHERE", s);
+        for(String r : route.get(0).directions){
+            Log.d("TESTER",r);
         }
+
         this.nextButton = this.findViewById(R.id.Nextbutton);
         Queue<ArrayList<String>> directions = new LinkedList<>();
         for(RouteExhibitItem dr : route){
             directions.add(dr.directions);
         }
+        // bug with first set of directions being empty
+        // this fixes reliably but don't know why that happens
+        directions.poll();
+
+
         DirectionAdapter adapter = new DirectionAdapter();
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
