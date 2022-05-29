@@ -129,6 +129,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
 
+
     @NonNull
     @Override
     //creates viewHolder
@@ -155,6 +156,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     public long getItemId(int position) {
         return routeItems.get(position).id;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;

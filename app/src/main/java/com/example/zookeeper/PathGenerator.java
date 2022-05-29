@@ -29,6 +29,7 @@ public class PathGenerator {
         // 1. Load the graph...
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
         //conditional values
+
         totalPath = new ArrayList<>();
         detailedDirections = new ArrayList<>();
         simpleDirections = new ArrayList<>();

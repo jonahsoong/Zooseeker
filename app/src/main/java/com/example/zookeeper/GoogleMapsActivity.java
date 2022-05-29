@@ -47,7 +47,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         var mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        animals = SearchItem.loadJSON(this, "OldAssets/zoo_node_info.json");
+        animals = SearchItem.loadJSON(this, "exhibit_info.json");
     }
 
     /**
