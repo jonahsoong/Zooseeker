@@ -20,8 +20,8 @@ public class PathGenerator {
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
     // for user story #73 Detailed Directions
-    private ArrayList<ArrayList<String>> detailedDirections;
-    private ArrayList<ArrayList<String>> simpleDirections;
+    private ArrayList<RouteExhibitItem> route;
+    private int position;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
         vInfo = ZooData.loadVertexInfoJSON(context,"exhibit_info.json");
@@ -31,11 +31,24 @@ public class PathGenerator {
         //conditional values
 
         totalPath = new ArrayList<>();
-        detailedDirections = new ArrayList<>();
-        simpleDirections = new ArrayList<>();
+        route = new ArrayList<>();
+
+        position = 0;
 
     }
+    /*
+    generatePlan turns the input into a full Plan. It filters the input, then computes the shortest
+    paths between all verticies in the input.
+    Whatever is in the first position of the input ArrayList is the first vertex of the path to be
+    computed. If this is the first time generatePlan has been called, then it simply generates
+    from the start vertex. If the plan is pre-populated, then any verticies in the stored plan
+    which are not part of the input are deleted, and the plan is repopulated from the start vertex
+    onwards.
 
+    it automatically calls and stores the result of getRoute, for use in the methods getNext(), getPrev(),
+    and getCurrent()
+
+     */
     public void generatePlan(ArrayList<String> input){
         // ensure that input ArrayList's first element is the starting element in the entire list.
         // "source" and "sink" are graph terms for the start and end
@@ -133,22 +146,32 @@ public class PathGenerator {
         }
         // the last path is always from wherever you are to the exit gate, so this is hardcoded
         totalPath.add(DijkstraShortestPath.findPathBetween(g,source,"entrance_exit_gate"));
+        getRoute();
     }
 
     public ArrayList<RouteExhibitItem> getRoute(){
+        route = new ArrayList<>();
 
         int i = 0;
-        ArrayList<RouteExhibitItem> output = new ArrayList<RouteExhibitItem>();
+
         //dummy route exhibit to show where you are currently
         String lastIn = "";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
-            String vName = vInfo.get(gr.getEndVertex()).name;
+            Log.d("hello","loop");
+            String vSink = vInfo.get(gr.getEndVertex()).name;
+            String vSource = vInfo.get(gr.getStartVertex()).name;
             double distance = 0;
             distance = gr.getWeight();
             ArrayList<String> directions1 = new ArrayList<String>();
             ArrayList<String> directions2 = new ArrayList<String>();
             List<IdentifiedWeightedEdge> edges = gr.getEdgeList();
             List<String> vertices = gr.getVertexList();
+
+            //lets brief directions determine when a trail is traversed across landmarks (prevStreet)
+            //allows the summation of weights when encountering multiple edges with the same trail
+            String prevStreet = "";
+            double aggregate = 0.0;
+
             for(IdentifiedWeightedEdge e : gr.getEdgeList()){
                 String intro = "Continue on ";
                 if(directions1.size() == 0 || directions1.size() == edges.size()){
@@ -173,20 +196,82 @@ public class PathGenerator {
                 }
 
                 lastIn = destination;
+                String direction;
+                //adds all strings to detailed directions Arrays, and
+                //sums up direction distance over repeated streets for brief directions.
+                if(!eInfo.get(e.getId()).street.equals(prevStreet)){
+                    aggregate = g.getEdgeWeight(e);
+                    direction = intro
+                            + eInfo.get(e.getId()).street + " "
+                            + g.getEdgeWeight(e) + " ft towards "
+                            + destination;
+                    directions1.add(direction);
+                    directions2.add(direction);
+                } else{
 
-                String direction = intro
-                        + eInfo.get(e.getId()).street + " "
-                        + g.getEdgeWeight(e) + " ft towards "
-                        + destination;
-                directions1.add(direction);
+                    double fullWeight = g.getEdgeWeight(e) + aggregate;
+                    direction = intro
+                            + eInfo.get(e.getId()).street + " "
+                            + fullWeight + " ft towards "
+                            + destination;
+                    directions1.add(direction);
+                    directions2.set(directions2.size()-1,direction);
+                    aggregate = fullWeight;
+                }
+                prevStreet = eInfo.get(e.getId()).street;
             }
-            RouteExhibitItem temp = new RouteExhibitItem(vName,distance,directions1,directions2);
-            output.add(temp);
-
+            RouteExhibitItem temp = new RouteExhibitItem(vSource,vSink,distance,directions1,directions2);
+            route.add(temp);
         }
-        return output;
+        return route;
 
     }
+    /*
+    whenever the route state changes, we change what the directions say. calling recalcPath
+    should do that.
+    TODO: have recalcPath set the source for findPathBetween to the closest current vertex, call from LocationChecker?
+    for now, just using whatever is at the current iterator count
+     */
+    private void recalcPath(String sink, String source){
+        GraphPath<String,IdentifiedWeightedEdge> temp = totalPath.get(position);
+        totalPath.set(position,DijkstraShortestPath.findPathBetween(g,source,sink));
+        getRoute();
+        totalPath.set(position,temp);
+    }
+    //iterates forward along route, returning the next RouteExhibitItem
+    public RouteExhibitItem getNext(){
+        if(position < route.size()-1){
+            position++;
+            recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+            return route.get(position);
+        } else{
+            return null;
+        }
+    }
+    //iterates backwards along route list, returning
+    public RouteExhibitItem getPrev(){
+        if(position > 0){
+            position--;
+            recalcPath(totalPath.get(position).getStartVertex(),totalPath.get(position).getEndVertex());
+            return route.get(position);
+        } else{
+            return null;
+        }
+    }
+
+    public RouteExhibitItem getCurrent(){
+        recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+        return route.get(position);
+    }
+
+    public boolean isFinished(){
+        if(position == route.size() -1){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
 
     public ArrayList<String> getNodes(){
         ArrayList<String> boop = new ArrayList<>();
@@ -226,6 +311,9 @@ public class PathGenerator {
         }
         return res;
     }
+
+
+
 
 
 }

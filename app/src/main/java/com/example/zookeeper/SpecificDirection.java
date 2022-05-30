@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
 public class SpecificDirection extends AppCompatActivity {
     private Button nextButton;
@@ -39,26 +40,22 @@ public class SpecificDirection extends AppCompatActivity {
 
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         this.nextButton = this.findViewById(R.id.Nextbutton);
-        Queue<ArrayList<String>> directions = new LinkedList<>();
-        for(RouteExhibitItem dr : route){
-            directions.add(dr.directionsDetailed);
-        }
+
         // bug with first set of directions being empty
         // this fixes reliably but don't know why that happens
-        directions.poll();
 
 
         DirectionAdapter adapter = new DirectionAdapter();
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setDirectionItems(directions.poll());
+        adapter.setDirectionItems(gen.getNext().directionsDetailed);
 
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(!directions.isEmpty()){
-                    adapter.setDirectionItems(directions.poll());
+                if(!gen.isFinished()){
+                    adapter.setDirectionItems(gen.getNext().directionsDetailed);
                 } else{
                     nextButton.setEnabled(false);
                 }
