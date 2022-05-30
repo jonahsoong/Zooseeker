@@ -35,8 +35,8 @@ public class PromptedReplanTest {
         ArrayList<String> output = new ArrayList<>(Arrays.asList("Koi Fish","Flamingos","Capuchin Monkeys","Entrance and Exit Gate"));
         int j = 0;
         for(RouteExhibitItem i : route2){
-            System.out.println(i.name + " | " + output.get(j));
-            Assert.assertEquals(i.name,output.get(j));
+            System.out.println(i.sink + " | " + output.get(j));
+            Assert.assertEquals(i.sink,output.get(j));
             j++;
         }
 
