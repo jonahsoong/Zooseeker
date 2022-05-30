@@ -70,6 +70,7 @@ public class SpecificDirection extends AppCompatActivity {
         prevButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                nextButton.setEnabled(true);
                 if(!gen.isEntrance()){
                     adapter.setDirectionItems(gen.getPrev().directionsDetailed);
                 } else{
@@ -81,7 +82,6 @@ public class SpecificDirection extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Log.d("CONTROL", gen.size()+ "");
                 if(gen.position < gen.size()-1 && gen.size() > 2){
                     gen.skipExhibit();
                     adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
