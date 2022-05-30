@@ -53,11 +53,12 @@ public class SpecificDirection extends AppCompatActivity {
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setDirectionItems(gen.getNext().directionsDetailed);
+        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
 
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                prevButton.setEnabled(true);
                 if(!gen.isFinished()){
                     adapter.setDirectionItems(gen.getNext().directionsDetailed);
                 } else{
@@ -73,6 +74,19 @@ public class SpecificDirection extends AppCompatActivity {
                     adapter.setDirectionItems(gen.getPrev().directionsDetailed);
                 } else{
                     prevButton.setEnabled(false);
+                }
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Log.d("CONTROL", gen.size()+ "");
+                if(gen.position < gen.size()-1 && gen.size() > 2){
+                    gen.skipExhibit();
+                    adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                } else {
+                    skipButton.setEnabled(false);
                 }
             }
         });

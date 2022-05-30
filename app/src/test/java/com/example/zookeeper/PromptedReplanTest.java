@@ -32,6 +32,9 @@ public class PromptedReplanTest {
         input = new ArrayList<>(Arrays.asList("koi","flamingo","capuchin"));
         gen.generatePlan(input);
         ArrayList<RouteExhibitItem> route2 = gen.getRoute();
+        for(RouteExhibitItem r : route2){
+            System.out.println("test " +  r.sink);
+        }
         ArrayList<String> output = new ArrayList<>(Arrays.asList("Koi Fish","Flamingos","Capuchin Monkeys","Entrance and Exit Gate"));
         int j = 0;
         for(RouteExhibitItem i : route2){

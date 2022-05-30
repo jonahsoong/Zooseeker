@@ -21,7 +21,7 @@ public class PathGenerator {
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
     // for user story #73 Detailed Directions
     private ArrayList<RouteExhibitItem> route;
-    private int position;
+    public int position;
     public PathGenerator(Context context){
         // 2. Load the information about our nodes and edges...
         vInfo = ZooData.loadVertexInfoJSON(context,"exhibit_info.json");
@@ -61,7 +61,7 @@ public class PathGenerator {
             l++;
         }
         for(String x : input){
-            Log.i("help",x);
+            Log.i("HOLO",x);
         }
         //assume input will come as List<String> format
         //check and delete duplicates
@@ -71,6 +71,12 @@ public class PathGenerator {
                     input.remove(i);
                 }
             }
+        }
+        for(String x : input){
+            Log.i("HOLO",x);
+        }
+        for(GraphPath<String, IdentifiedWeightedEdge> ggg : totalPath){
+            Log.d("HAHA" , ggg.getStartVertex() + " | " + ggg.getEndVertex());
         }
 
         GraphPath<String, IdentifiedWeightedEdge> path;
@@ -85,39 +91,37 @@ public class PathGenerator {
         // the last replan node is the source.
         if(!totalPath.isEmpty()){
             //removes all paths that begin with a node we have not visited
-            //and removes the path back to the entrance gate
             //what remains should be all traversed paths, plus whatever path starts
             //with the new closest node at input.get(0)
-            for(int m = 1; m < input.size(); m++){
-                String s = input.get(m);
-                for(int k = 0; k < totalPath.size(); k++){
-                    if(totalPath.get(k).getStartVertex() == s){
-                        totalPath.remove(k);
-                        k--;
-                    }
-                    if(totalPath.get(k).getEndVertex() == "entrance_exit_gate"){
-                        totalPath.remove(k);
-                        k--;
-                    }
+            Log.d("huh" , totalPath.size()+"");
+            int startSize = totalPath.size() - input.size();
+            if(input.get(0) == "entrance_exit_gate"){
+                while(totalPath.size() != 0){
+                    totalPath.remove(totalPath.size()-1);
                 }
+            } else{
+                int count = 1;
+                int n = totalPath.size()-1;
+                while(!totalPath.get(n).getEndVertex().equals(input.get(0))){
+                        count++;
+                        n--;
+                }
+                while(count >=0) {
+                    totalPath.remove(totalPath.size() - 1);
+                    count--;
+                }
+                //finds the path which occurs just before the desired first position
+                //stores the start vertex value and deletes the path
+                String temp = totalPath.get(totalPath.size()-1).getStartVertex();
+
+                //connects a shortest path between the last visited vertex
+                //and the desired first position
+                totalPath.add(DijkstraShortestPath.findPathBetween(g,temp,source));
+                input.remove(0);
             }
 
-            //finds the path which occurs just before the desired first position
-            //stores the start vertex value and deletes the path
-
-            String temp = totalPath.get(totalPath.size()-1).getStartVertex();
-            totalPath.remove(totalPath.size()-1);
-
-        for(String s:input){
-            Log.d("HEWLO", s);
         }
 
-
-            //connects a shortest path between the last visited vertex
-            //and the desired first position
-            totalPath.add(DijkstraShortestPath.findPathBetween(g,temp,source));
-            input.remove(0);
-        }
         boolean[] isVisited = new boolean[input.size()];
         for(int i = 0; i < input.size(); i++){
             double weight = 1000000;
@@ -146,6 +150,7 @@ public class PathGenerator {
         }
         // the last path is always from wherever you are to the exit gate, so this is hardcoded
         totalPath.add(DijkstraShortestPath.findPathBetween(g,source,"entrance_exit_gate"));
+        totalPath.remove(0);
         getRoute();
     }
 
@@ -264,6 +269,35 @@ public class PathGenerator {
         return route.get(position);
     }
 
+    public void skipExhibit(){
+        ArrayList<String> temp = new ArrayList<>();
+        for(GraphPath<String, IdentifiedWeightedEdge> gr : totalPath){
+            Log.d("help" ,gr.getStartVertex()+ gr.getEndVertex() );
+            temp.add(gr.getStartVertex());
+            temp.add(gr.getEndVertex());
+        }
+        Log.d("what" ,position+ "");
+        Log.d("what", totalPath.get(position).getEndVertex());
+        int n = position;
+        for(int i = 0; i < temp.size(); i++){
+            temp.remove(totalPath.get(position).getEndVertex());
+            if(temp.contains("entrance_exit_gate")){
+                temp.remove("entrance_exit_gate");
+            }
+        }
+        if(position == 0){
+            temp.add(0,"entrance_exit_gate");
+        } else{
+            temp.add(0,totalPath.get(position).getStartVertex());
+        }
+
+        generatePlan(temp);
+
+
+
+
+    }
+
     public boolean isFinished(){
         if(position == route.size() -1){
             return true;
@@ -273,11 +307,15 @@ public class PathGenerator {
     }
 
     public boolean isEntrance(){
-        if(position <= 1){
+        if(position == 0){
             return true;
         } else {
             return false;
         }
+    }
+
+    public int size(){
+        return route.size();
     }
 
 
