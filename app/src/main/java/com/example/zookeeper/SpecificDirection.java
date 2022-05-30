@@ -22,6 +22,8 @@ import java.util.Stack;
 
 public class SpecificDirection extends AppCompatActivity {
     private Button nextButton;
+    private Button skipButton;
+    private Button prevButton;
     public RecyclerView recyclerView;
 
     @Override
@@ -40,6 +42,8 @@ public class SpecificDirection extends AppCompatActivity {
 
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         this.nextButton = this.findViewById(R.id.Nextbutton);
+        this.prevButton = this.findViewById(R.id.prevButton);
+        this.skipButton = this.findViewById(R.id.skipButton);
 
         // bug with first set of directions being empty
         // this fixes reliably but don't know why that happens
@@ -58,6 +62,17 @@ public class SpecificDirection extends AppCompatActivity {
                     adapter.setDirectionItems(gen.getNext().directionsDetailed);
                 } else{
                     nextButton.setEnabled(false);
+                }
+            }
+        });
+
+        prevButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(!gen.isEntrance()){
+                    adapter.setDirectionItems(gen.getPrev().directionsDetailed);
+                } else{
+                    prevButton.setEnabled(false);
                 }
             }
         });

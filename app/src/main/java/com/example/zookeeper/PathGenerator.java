@@ -272,6 +272,14 @@ public class PathGenerator {
         }
     }
 
+    public boolean isEntrance(){
+        if(position <= 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public ArrayList<String> getNodes(){
         ArrayList<String> boop = new ArrayList<>();
