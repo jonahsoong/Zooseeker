@@ -33,6 +33,9 @@ public class SpecificDirection extends AppCompatActivity {
     public RecyclerView recyclerView;
     public boolean briefOrDetailed = true;
     private Switch briefDetailedSwitch;
+    LatLng current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
+    PathGenerator gen = new PathGenerator(this);
+    DirectionAdapter adapter = new DirectionAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,8 @@ public class SpecificDirection extends AppCompatActivity {
         //retrieves data for generating route. convenient to have full PathGenerator object for replanning.
         Bundle b = getIntent().getExtras();
         ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
-        PathGenerator gen = new PathGenerator(this);
-        gen.generatePlan(input);
 
+        gen.generatePlan(input);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         this.nextButton = this.findViewById(R.id.Nextbutton);
         this.prevButton = this.findViewById(R.id.prevButton);
@@ -58,7 +60,7 @@ public class SpecificDirection extends AppCompatActivity {
         // this fixes reliably but don't know why that happens
 
 
-        DirectionAdapter adapter = new DirectionAdapter();
+
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -149,13 +151,15 @@ public class SpecificDirection extends AppCompatActivity {
 //        convert to double
         double latInput = Double.parseDouble(latitude.getText().toString());
         double lngInput = Double.parseDouble(longitude.getText().toString());
-        var checkLoc = new LocationChecker(this);
+        var checkLoc = new LocationChecker(current);
         if (latitude != null && longitude != null){
 //            update the location with the input
 //            we need to decide whether to call replan
             ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
-            checkLoc.updateRoute(latInput, lngInput);
-            LatLngs.current = new LatLng(latInput,lngInput);
+            if (briefOrDetailed)
+                adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+            else
+                adapter.setDirectionItems(gen.getCurrent().directionsBrief);
             latitude.setText("");
             longitude.setText("");
         }

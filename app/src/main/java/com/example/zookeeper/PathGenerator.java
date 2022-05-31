@@ -3,6 +3,8 @@ package com.example.zookeeper;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -163,8 +165,8 @@ public class PathGenerator {
         String lastIn = "";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
             Log.d("hello","loop");
-            String vSink = vInfo.get(gr.getEndVertex()).name;
-            String vSource = vInfo.get(gr.getStartVertex()).name;
+            String vSink = vInfo.get(gr.getEndVertex()).id;
+            String vSource = vInfo.get(gr.getStartVertex()).id;
             double distance = 0;
             distance = gr.getWeight();
             ArrayList<String> directions1 = new ArrayList<String>();
@@ -316,6 +318,22 @@ public class PathGenerator {
 
     public int size(){
         return route.size();
+    }
+
+    public ArrayList<String> getRemaining(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = position; i < route.size(); i++){
+            a.add(route.get(i).sink);
+        }
+        return a;
+    }
+
+    public ArrayList<LatLng> getLocations(ArrayList<String> verticies){
+        ArrayList<LatLng> a = new ArrayList<>();
+        for(String s: verticies){
+            a.add(new LatLng(vInfo.get(s).lat,vInfo.get(s).lng));
+        }
+        return a;
     }
 
 
