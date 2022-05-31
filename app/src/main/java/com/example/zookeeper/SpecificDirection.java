@@ -1,5 +1,6 @@
 package com.example.zookeeper;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,6 +62,16 @@ public class SpecificDirection extends AppCompatActivity {
         //      Log.d("HELPMEOUTHERE", step);
         //  }
 
+    }
 
+    public void onConfirmClicked(View view) {
+        EditText latitude = findViewById(R.id.LatInput);
+        EditText longitude = findViewById(R.id.LngInput);
+        Button confirm = findViewById(R.id.mockConfirm);
+        double latInput = Double.parseDouble(latitude.getText().toString());
+        double LngInput = Double.parseDouble(longitude.getText().toString());
+        if (latitude != null && longitude != null){
+//            TODO: use the doubles to generate the current location
+        }
     }
 }
