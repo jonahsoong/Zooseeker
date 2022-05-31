@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationChecker {
-    private LatLng current;
+    private static LatLng current;
 
 
     public LocationChecker(LatLng current){
         this.current = current;
     }
-    public String updateRoute(ArrayList<String> remaining, ArrayList<LatLng> coordinates){
+    public static String updateRoute(ArrayList<String> remaining, ArrayList<LatLng> coordinates){
 
         String closestExhibit = "";
         double closestDistance = Double.MAX_VALUE;
@@ -32,7 +32,10 @@ public class LocationChecker {
         }
         return closestExhibit;
 
-
-
+    }
+    public static LatLng updateLocation(LatLng newCoord){
+        LatLng oldLoc = current;
+        current = newCoord;
+        return oldLoc;
     }
 }

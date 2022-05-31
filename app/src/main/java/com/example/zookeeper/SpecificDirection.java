@@ -57,6 +57,7 @@ public class SpecificDirection extends AppCompatActivity {
         adapter = new DirectionAdapter();
         gen.generatePlan(input);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
+        Stack<RouteExhibitItem> visited = new Stack<>();
         this.nextButton = this.findViewById(R.id.Nextbutton);
         this.prevButton = this.findViewById(R.id.prevButton);
         this.skipButton = this.findViewById(R.id.skipButton);
@@ -109,6 +110,7 @@ public class SpecificDirection extends AppCompatActivity {
                     public void onClick(View v) {
                         prevButton.setEnabled(true);
                         if (!gen.isFinished()) {
+                            //visited.add(route.remove(0));
                             if (briefOrDetailed)
                                 adapter.setDirectionItems(gen.getNext().directionsDetailed);
                             else
@@ -155,10 +157,22 @@ public class SpecificDirection extends AppCompatActivity {
                 EditText latitude = findViewById(R.id.LatInput);
                 EditText longitude = findViewById(R.id.LngInput);
 //        convert to double
-                double latInput = Double.parseDouble(latitude.getText().toString());
-                double lngInput = Double.parseDouble(longitude.getText().toString());
-                gen = setLocation(latInput,lngInput);
-                if (latitude != null && longitude != null){
+                double latInput = Double.MIN_VALUE;
+                double lngInput = Double.MIN_VALUE;
+                try {
+                    latInput = Double.parseDouble(latitude.getText().toString());
+                    lngInput = Double.parseDouble(longitude.getText().toString());
+                } catch (NumberFormatException e) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SpecificDirection.this);
+                    builder.setMessage("Invalid Input! Please enter a number.");
+                    builder.create();
+                }
+                LocationChecker.updateLocation(new LatLng(latInput, lngInput));
+                String closest = LocationChecker.updateRoute(gen.getExhibitString(),gen.getRemainingLocations());
+//                double latInput = Double.parseDouble(latitude.getText().toString());
+//                double lngInput = Double.parseDouble(longitude.getText().toString());
+                //gen = setLocation(latInput,lngInput);
+
 //            update the location with the input
 //            we need to decide whether to call replan
 
@@ -168,8 +182,6 @@ public class SpecificDirection extends AppCompatActivity {
                         adapter.setDirectionItems(gen.getCurrent().directionsBrief);
                     //latitude.setText("");
                     //longitude.setText("");
-            }
-
             }
         });
 

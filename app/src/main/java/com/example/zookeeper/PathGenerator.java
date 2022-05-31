@@ -21,6 +21,7 @@ public class PathGenerator {
     private Map<String, ZooData.EdgeInfo> eInfo;
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
+    private ArrayList<String> input;
     // for user story #73 Detailed Directions
     private ArrayList<RouteExhibitItem> route;
     public int position;
@@ -37,6 +38,9 @@ public class PathGenerator {
 
         position = 0;
 
+    }
+    public void updateInputs(ArrayList<String> input){
+        this.input = input;
     }
     /*
     generatePlan turns the input into a full Plan. It filters the input, then computes the shortest
@@ -330,7 +334,20 @@ public class PathGenerator {
         }
         return a;
     }
-
+    public ArrayList<String> getExhibitString(){
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = position; i < route.size(); i++){
+            a.add(input.get(i));
+        }
+        return a;
+    }
+    public ArrayList<LatLng> getRemainingLocations(){
+        ArrayList<LatLng> a = new ArrayList<>();
+        for(int i = position; i < route.size(); i++){
+            a.add(new LatLng(vInfo.get(input.get(i)).lat, vInfo.get(input.get(i)).lng));
+        }
+        return a;
+    }
     public ArrayList<LatLng> getLocations(ArrayList<String> verticies){
         ArrayList<LatLng> a = new ArrayList<>();
         for(String s: verticies){
