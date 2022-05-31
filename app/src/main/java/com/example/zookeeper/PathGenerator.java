@@ -344,7 +344,7 @@ public class PathGenerator {
     public ArrayList<String> getExhibitString(){
         ArrayList<RouteExhibitItem> b = getRemaining();
         ArrayList<String> a = new ArrayList<>();
-        for(int i = 0; i < b.size(); i++){
+        for(int i = 0; i < b.size()-1; i++){
             a.add(b.get(i).sink);
         }
         return a;
@@ -352,7 +352,7 @@ public class PathGenerator {
     public ArrayList<LatLng> getRemainingLocations(){
         ArrayList<RouteExhibitItem> b = getRemaining();
         ArrayList<LatLng> a = new ArrayList<>();
-        for(int i = 0; i < b.size(); i++){
+        for(int i = 0; i < b.size()-1; i++){
             a.add(new LatLng(vInfo.get(b.get(i).sink).lat, vInfo.get(b.get(i).sink).lng));
         }
         return a;
