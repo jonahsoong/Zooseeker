@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,12 +31,13 @@ public class SpecificDirection extends AppCompatActivity {
     private Button nextButton;
     private Button skipButton;
     private Button prevButton;
+    private Button confirmMocking;
     public RecyclerView recyclerView;
     public boolean briefOrDetailed = true;
     private Switch briefDetailedSwitch;
-    LatLng current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
-    PathGenerator gen = new PathGenerator(this);
-    DirectionAdapter adapter = new DirectionAdapter();
+    private PathGenerator gen;
+    private LatLng current;
+    private DirectionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +51,17 @@ public class SpecificDirection extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
 
+        gen = new PathGenerator(this);
+        ((CurrentLocation) this.getApplication()).setPathGenerator(gen);
+        current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
+        adapter = new DirectionAdapter();
         gen.generatePlan(input);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
         this.nextButton = this.findViewById(R.id.Nextbutton);
         this.prevButton = this.findViewById(R.id.prevButton);
         this.skipButton = this.findViewById(R.id.skipButton);
         this.briefDetailedSwitch = findViewById(R.id.bodSwitch);
+        this.confirmMocking = findViewById(R.id.mockConfirm);
 
         // bug with first set of directions being empty
         // this fixes reliably but don't know why that happens
@@ -142,26 +149,37 @@ public class SpecificDirection extends AppCompatActivity {
             }
         });
 
-
-    }
-
-    public void onConfirmClicked(View view) {
-        EditText latitude = findViewById(R.id.LatInput);
-        EditText longitude = findViewById(R.id.LngInput);
+        confirmMocking.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                EditText latitude = findViewById(R.id.LatInput);
+                EditText longitude = findViewById(R.id.LngInput);
 //        convert to double
-        double latInput = Double.parseDouble(latitude.getText().toString());
-        double lngInput = Double.parseDouble(longitude.getText().toString());
-        var checkLoc = new LocationChecker(current);
-        if (latitude != null && longitude != null){
+                double latInput = Double.parseDouble(latitude.getText().toString());
+                double lngInput = Double.parseDouble(longitude.getText().toString());
+                gen = setLocation(latInput,lngInput);
+                if (latitude != null && longitude != null){
 //            update the location with the input
 //            we need to decide whether to call replan
-            ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
-            if (briefOrDetailed)
-                adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
-            else
-                adapter.setDirectionItems(gen.getCurrent().directionsBrief);
-            latitude.setText("");
-            longitude.setText("");
-        }
+
+                    if (briefOrDetailed)
+                        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                    else
+                        adapter.setDirectionItems(gen.getCurrent().directionsBrief);
+                    //latitude.setText("");
+                    //longitude.setText("");
+            }
+
+            }
+        });
+
+
     }
+
+    public PathGenerator setLocation(double latInput, double lngInput){
+        ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
+        return ((CurrentLocation) this.getApplication()).getPathGenerator();
+    }
+
+
 }

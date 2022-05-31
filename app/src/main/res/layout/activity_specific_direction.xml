@@ -63,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:ems="10"
+        android:text="32.723406588476784"
         android:hint="Latitude in decimal"
-        android:inputType="numberDecimal"
         android:minHeight="48dp"
         app:layout_constraintStart_toEndOf="@+id/Latitude"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -76,8 +76,8 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="6dp"
         android:ems="10"
+        android:text="-117.16274043170196"
         android:hint="Longitude in decimal"
-        android:inputType="numberDecimal"
         android:minHeight="48dp"
         app:layout_constraintStart_toEndOf="@+id/Longitude"
         app:layout_constraintTop_toBottomOf="@+id/LatInput" />

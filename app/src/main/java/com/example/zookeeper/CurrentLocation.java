@@ -16,11 +16,16 @@ public class CurrentLocation extends Application {
 
         public void setCurrentLocation(LatLng currentLocation) {
             this.currentLocation = currentLocation;
-            ArrayList<String> remaining = pg.getRemaining();
-            ArrayList<LatLng> loc = pg.getLocations(pg.getRemaining());
+            ArrayList<RouteExhibitItem> remaining = pg.getRemaining();
+            ArrayList<String> names = new ArrayList<>();
+            for(RouteExhibitItem r : remaining){
+                names.add(r.source);
+            }
+            ArrayList<LatLng> loc = pg.getLocations(names);
             LocationChecker check = new LocationChecker(currentLocation);
-            remaining.add(0,check.updateRoute(pg.getRemaining(),loc));
-            pg.generatePlan(remaining);
+
+            names.add(0,check.updateRoute(names,loc));
+            pg.generatePlan(names);
         }
 
         public void setPathGenerator(PathGenerator pg) {

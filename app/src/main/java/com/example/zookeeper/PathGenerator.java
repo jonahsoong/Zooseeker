@@ -108,12 +108,15 @@ public class PathGenerator {
                         count++;
                         n--;
                 }
-                while(count >=0) {
+
+                while(count >= 0) {
                     totalPath.remove(totalPath.size() - 1);
                     count--;
                 }
+
                 //finds the path which occurs just before the desired first position
                 //stores the start vertex value and deletes the path
+
                 String temp = totalPath.get(totalPath.size()-1).getStartVertex();
 
                 //connects a shortest path between the last visited vertex
@@ -320,10 +323,10 @@ public class PathGenerator {
         return route.size();
     }
 
-    public ArrayList<String> getRemaining(){
-        ArrayList<String> a = new ArrayList<>();
+    public ArrayList<RouteExhibitItem> getRemaining(){
+        ArrayList<RouteExhibitItem> a = new ArrayList<>();
         for(int i = position; i < route.size(); i++){
-            a.add(route.get(i).sink);
+            a.add(route.get(i));
         }
         return a;
     }
