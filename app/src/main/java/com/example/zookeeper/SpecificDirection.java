@@ -1,5 +1,6 @@
 package com.example.zookeeper;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jgrapht.alg.util.Pair;
 
@@ -92,6 +96,22 @@ public class SpecificDirection extends AppCompatActivity {
         });
 
 
+    }
 
+    public void onConfirmClicked(View view) {
+        EditText latitude = findViewById(R.id.LatInput);
+        EditText longitude = findViewById(R.id.LngInput);
+//        convert to double
+        double latInput = Double.parseDouble(latitude.getText().toString());
+        double lngInput = Double.parseDouble(longitude.getText().toString());
+        var checkLoc = new LocationChecker(this);
+        if (latitude != null && longitude != null){
+//            update the location with the input
+//            we need to decide whether to call replan
+            checkLoc.updateRoute(latInput, lngInput);
+            LatLngs.current = new LatLng(latInput,lngInput);
+            latitude.setText("");
+            longitude.setText("");
+        }
     }
 }

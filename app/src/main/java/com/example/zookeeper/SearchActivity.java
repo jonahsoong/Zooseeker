@@ -38,12 +38,13 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
-        int index = 0;
+
 
         animals =  SearchItem.loadJSON(this, "exhibit_info.json");
         animalList = new Hashtable();
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {
+//            don't add exhibit group in search
             if (animal.kind.equals("exhibit") ||animal.kind.equals("gate")) {
                 name.add(animal.name);
                 animalList.put(animal.name, animal);
@@ -56,8 +57,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }
-//        filteredId = new ArrayList<String>(id);
-//        filteredId = id;
+
         listView = findViewById(R.id.listview);
 //        takes in an adapter, a view and a position and uses them
         listView.setOnItemClickListener((adapter, v, position, arg3) -> {
@@ -68,17 +68,10 @@ public class SearchActivity extends AppCompatActivity {
                 String currentId = animalList.get(animalClickedName).id;
                 double lat = animalList.get(animalClickedName).lat;
                 double lng = animalList.get(animalClickedName).lng;
-                //String animalName = "";
+
                 Log.d("item on click", animalClickedName);
 //                get the id of the animal
-//                for (SearchItem animal: animals){
-//                    if (animalClickedName.equals(animal.name)){
-//                        currentId = animal.id;
-//                        lat =
-//                        Log.d("Animal id for the name", "onCreate: " + currentId);
-//                        break;
-//                    }
-//                }
+
                 viewModel.createRouteItem(currentId, animalClickedName, lat, lng);
             })
             .setNegativeButton("No",null);
@@ -110,8 +103,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText){
                 name.clear();
-//                filteredId = new ArrayList<String>(id);
-//                filteredId = id;
                 for (SearchItem animal: animals) {
                     if (animal.kind.equals("exhibit") ||animal.kind.equals("gate"))
                         name.add(animal.name);
@@ -127,24 +118,7 @@ public class SearchActivity extends AppCompatActivity {
                         filteredTags.add(tag);
                     }
                 }
-////                filter the array of tags
-////                    tagsAdapter.getFilter().filter(newText);
-////                add the tags filtered to a list
-//                    for (int i = 0; i < tagsAdapter.getCount(); i++) {
-////                        for (String filteredTag: filteredTags){
-////                            if (filteredTag.indexOf(arrayAdapter.getItem(i)) == -1){
-////                                filteredTags.add(arrayAdapter.getItem(i));
-////                            }
-////                        }
-//                        Log.d("array adapter: ", tagsAdapter.getItem(i) + "\n");
-//                        if (!filteredTags.contains(tagsAdapter.getItem(i))) {
-//                            filteredTags.add(tagsAdapter.getItem(i));
-//                        }
-//                    }
-//                for (String tag: filteredTags){
-//                    Log.d("filteredTags" , tag);
-//                }
-//                Log.d("number count: ", "filtered " + filteredTags.size());
+
                     for (String filteredTag : filteredTags) {
                         for (SearchItem animal : animals) {
 //                        if the tags are in an animal and the animal is not already in the list we add it
@@ -155,7 +129,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     }
                 }
-//                originalIdsAd.setNotifyOnChange(true);
+
                 listView.setAdapter(nameAdapter);
                 Log.d("input: ",newText + "\n");
                 Log.d("filtered list", name.toString() + "\n");
@@ -166,6 +140,7 @@ public class SearchActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+//    create a plan when the button is clicked
     public void onPlanClicked(View view) {
         Intent intent = new Intent(this,PlanActivity.class);
         Log.d("ids", viewModel.getIds().toString());
