@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -38,8 +40,11 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
-
-
+        LatLng current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
+        Log.d("current location before: ", current.toString());
+        ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(0,0));
+        current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
+        Log.d("current location after: ", current.toString());
         animals =  SearchItem.loadJSON(this, "exhibit_info.json");
         animalList = new Hashtable();
         Log.d("SearchItems", animals.toString());

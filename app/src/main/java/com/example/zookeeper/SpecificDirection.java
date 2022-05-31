@@ -153,6 +153,7 @@ public class SpecificDirection extends AppCompatActivity {
         if (latitude != null && longitude != null){
 //            update the location with the input
 //            we need to decide whether to call replan
+            ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
             checkLoc.updateRoute(latInput, lngInput);
             LatLngs.current = new LatLng(latInput,lngInput);
             latitude.setText("");
