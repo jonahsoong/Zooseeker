@@ -44,7 +44,7 @@ public class PathGenerator {
     }
     /*
     generatePlan turns the input into a full Plan. It filters the input, then computes the shortest
-    paths between all verticies in the input.
+    paths between all vertices in the input.
     Whatever is in the first position of the input ArrayList is the first vertex of the path to be
     computed. If this is the first time generatePlan has been called, then it simply generates
     from the start vertex. If the plan is pre-populated, then any verticies in the stored plan
@@ -262,6 +262,12 @@ public class PathGenerator {
             return null;
         }
     }
+    public RouteExhibitItem peekNext(){
+        if(position < route.size()-1) {
+            return route.get(position + 1);
+        }
+        return null;
+    }
     //iterates backwards along route list, returning
     public RouteExhibitItem getPrev(){
         if(position > 0){
@@ -272,6 +278,7 @@ public class PathGenerator {
             return null;
         }
     }
+
 
     public RouteExhibitItem getCurrent(){
         recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
@@ -335,16 +342,18 @@ public class PathGenerator {
         return a;
     }
     public ArrayList<String> getExhibitString(){
+        ArrayList<RouteExhibitItem> b = getRemaining();
         ArrayList<String> a = new ArrayList<>();
-        for(int i = position; i < route.size(); i++){
-            a.add(input.get(i));
+        for(int i = 0; i < b.size(); i++){
+            a.add(b.get(i).sink);
         }
         return a;
     }
     public ArrayList<LatLng> getRemainingLocations(){
+        ArrayList<RouteExhibitItem> b = getRemaining();
         ArrayList<LatLng> a = new ArrayList<>();
-        for(int i = position; i < route.size(); i++){
-            a.add(new LatLng(vInfo.get(input.get(i)).lat, vInfo.get(input.get(i)).lng));
+        for(int i = 0; i < b.size(); i++){
+            a.add(new LatLng(vInfo.get(b.get(i).sink).lat, vInfo.get(b.get(i).sink).lng));
         }
         return a;
     }

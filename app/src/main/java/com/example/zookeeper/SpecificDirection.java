@@ -159,6 +159,7 @@ public class SpecificDirection extends AppCompatActivity {
 //        convert to double
                 double latInput = Double.MIN_VALUE;
                 double lngInput = Double.MIN_VALUE;
+                Log.d("Show Alert", "Parsing Inputs");
                 try {
                     latInput = Double.parseDouble(latitude.getText().toString());
                     lngInput = Double.parseDouble(longitude.getText().toString());
@@ -167,8 +168,18 @@ public class SpecificDirection extends AppCompatActivity {
                     builder.setMessage("Invalid Input! Please enter a number.");
                     builder.create();
                 }
+                Log.d("Show Alert", "Checking Locations. Lat " + latInput + " Lng: " + lngInput);
                 LocationChecker.updateLocation(new LatLng(latInput, lngInput));
+                Log.d("Show", "" + gen.getExhibitString());
+                Log.d("Show", "" + gen.getRemainingLocations());
                 String closest = LocationChecker.updateRoute(gen.getExhibitString(),gen.getRemainingLocations());
+                if(!closest.equals(gen.peekNext().sink)){
+                    Log.d("Show Alert", "Closest: " + closest + " Next: " + gen.peekNext().sink);
+
+                }
+                else{
+                    Log.d("Show Alert", "Closest is same!");
+                }
 //                double latInput = Double.parseDouble(latitude.getText().toString());
 //                double lngInput = Double.parseDouble(longitude.getText().toString());
                 //gen = setLocation(latInput,lngInput);

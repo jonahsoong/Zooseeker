@@ -21,8 +21,8 @@ public class LocationChecker {
 
         String closestExhibit = "";
         double closestDistance = Double.MAX_VALUE;
-        int i = 0;
-        for(String s : remaining){
+        for(int i = 0; i < remaining.size(); i++){
+            String s = remaining.get(i);
             double dist = Math.sqrt(Math.pow(current.latitude-coordinates.get(i).latitude,2)
                     + Math.pow(current.longitude-coordinates.get(i).longitude,2));
             if(dist < closestDistance){
