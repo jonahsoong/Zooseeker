@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,11 +69,17 @@ public class SpecificDirection extends AppCompatActivity {
     public void onConfirmClicked(View view) {
         EditText latitude = findViewById(R.id.LatInput);
         EditText longitude = findViewById(R.id.LngInput);
-        Button confirm = findViewById(R.id.mockConfirm);
+//        convert to double
         double latInput = Double.parseDouble(latitude.getText().toString());
-        double LngInput = Double.parseDouble(longitude.getText().toString());
+        double lngInput = Double.parseDouble(longitude.getText().toString());
+        var checkLoc = new LocationChecker(this);
         if (latitude != null && longitude != null){
-//            TODO: use the doubles to generate the current location
+//            update the location with the input
+//            we need to decide whether to call replan
+            checkLoc.updateRoute(latInput, lngInput);
+            LatLngs.current = new LatLng(latInput,lngInput);
+            latitude.setText("");
+            longitude.setText("");
         }
     }
 }

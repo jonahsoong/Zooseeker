@@ -23,6 +23,7 @@ import com.example.zookeeper.databinding.ActivityGoogleMapsBinding;
 import java.util.Arrays;
 import java.util.List;
 
+//This has to run on the background
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
 //    private final PermissionChecker permissionChecker = new PermissionChecker(this);
