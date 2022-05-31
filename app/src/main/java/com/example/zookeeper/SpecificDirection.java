@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,6 +31,8 @@ public class SpecificDirection extends AppCompatActivity {
     private Button skipButton;
     private Button prevButton;
     public RecyclerView recyclerView;
+    public boolean briefOrDetailed = true;
+    private Switch briefDetailedSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class SpecificDirection extends AppCompatActivity {
         this.nextButton = this.findViewById(R.id.Nextbutton);
         this.prevButton = this.findViewById(R.id.prevButton);
         this.skipButton = this.findViewById(R.id.skipButton);
+        this.briefDetailedSwitch = findViewById(R.id.bodSwitch);
 
         // bug with first set of directions being empty
         // this fixes reliably but don't know why that happens
@@ -57,26 +62,63 @@ public class SpecificDirection extends AppCompatActivity {
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+        if (briefOrDetailed)
+            adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+        else
+            adapter.setDirectionItems(gen.getCurrent().directionsBrief);
 
-        nextButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                prevButton.setEnabled(true);
-                if(!gen.isFinished()){
-                    adapter.setDirectionItems(gen.getNext().directionsDetailed);
-                } else{
-                    nextButton.setEnabled(false);
-                }
-            }
-        });
+//        btn onclick bod = false;
+//        if (bod == true) detailed
+//        else brief
+        briefDetailedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+               briefOrDetailed = b;
+               if(briefOrDetailed){
+                   adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                   briefDetailedSwitch.setText("change to brief directions");
+               }
+               else{
+                   adapter.setDirectionItems(gen.getCurrent().directionsBrief);
+                   briefDetailedSwitch.setText("change to detailed directions");
+               }
+           }
+       });
+//                new () {
+//            @Override
+//            public void onClick(View view) {
+//                //dDir.toggle();
+//                briefDetailedSwitch.toggle();
+//                if(briefDetailedSwitch.isChecked())
+//                    briefOrDetailed = true;
+//                else
+//                    briefOrDetailed = false;
+//            }
+//        });
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        prevButton.setEnabled(true);
+                        if (!gen.isFinished()) {
+                            if (briefOrDetailed)
+                                adapter.setDirectionItems(gen.getNext().directionsDetailed);
+                            else
+                                adapter.setDirectionItems(gen.getNext().directionsBrief);
+                        } else {
+                            nextButton.setEnabled(false);
+                        }
+                    }
+                });
 
         prevButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 nextButton.setEnabled(true);
                 if(!gen.isEntrance()){
-                    adapter.setDirectionItems(gen.getPrev().directionsDetailed);
+                    if (briefOrDetailed)
+                        adapter.setDirectionItems(gen.getPrev().directionsDetailed);
+                    else
+                        adapter.setDirectionItems(gen.getPrev().directionsBrief);
                 } else{
                     prevButton.setEnabled(false);
                 }
@@ -88,7 +130,10 @@ public class SpecificDirection extends AppCompatActivity {
             public void onClick(View v){
                 if(gen.position < gen.size()-1 && gen.size() > 2){
                     gen.skipExhibit();
-                    adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                    if (briefOrDetailed)
+                        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                    else
+                        adapter.setDirectionItems(gen.getCurrent().directionsBrief);
                 } else {
                     skipButton.setEnabled(false);
                 }
