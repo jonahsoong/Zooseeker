@@ -113,4 +113,18 @@
         app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LngInput" />
+
+    <Switch
+        android:id="@+id/bodSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="164dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="8dp"
+        android:minHeight="48dp"
+        android:text="change to brief direction"
+        app:layout_constraintBottom_toTopOf="@+id/Nextbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:checked="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
