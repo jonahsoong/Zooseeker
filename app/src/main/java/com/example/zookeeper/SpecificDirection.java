@@ -14,14 +14,20 @@ import android.widget.EditText;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.jgrapht.alg.util.Pair;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
 public class SpecificDirection extends AppCompatActivity {
     private Button nextButton;
+    private Button skipButton;
+    private Button prevButton;
     public RecyclerView recyclerView;
 
     @Override
@@ -32,37 +38,63 @@ public class SpecificDirection extends AppCompatActivity {
         setContentView(R.layout.activity_specific_direction);
         //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
         //passes ArrayList<POJO> through to this activity
+        //retrieves data for generating route. convenient to have full PathGenerator object for replanning.
         Bundle b = getIntent().getExtras();
-        ArrayList<RouteExhibitItem> route = (ArrayList<RouteExhibitItem>) b.getSerializable("route_exhibits");
-        for(RouteExhibitItem step : route){
-            for(String s : step.directions)
-                Log.d("HELPMEOUTHERE", s);
-        }
+        ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
+        PathGenerator gen = new PathGenerator(this);
+        gen.generatePlan(input);
+
+        ArrayList<RouteExhibitItem> route = gen.getRoute();
         this.nextButton = this.findViewById(R.id.Nextbutton);
-        Queue<ArrayList<String>> directions = new LinkedList<>();
-        for(RouteExhibitItem dr : route){
-            directions.add(dr.directions);
-        }
+        this.prevButton = this.findViewById(R.id.prevButton);
+        this.skipButton = this.findViewById(R.id.skipButton);
+
+        // bug with first set of directions being empty
+        // this fixes reliably but don't know why that happens
+
+
         DirectionAdapter adapter = new DirectionAdapter();
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.setDirectionItems(directions.poll());
+        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
 
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(!directions.isEmpty()){
-                    adapter.setDirectionItems(directions.poll());
+                prevButton.setEnabled(true);
+                if(!gen.isFinished()){
+                    adapter.setDirectionItems(gen.getNext().directionsDetailed);
                 } else{
                     nextButton.setEnabled(false);
                 }
             }
         });
 
-        //  for(String step : route.get(currentDirection[0]).directions){
-        //      Log.d("HELPMEOUTHERE", step);
-        //  }
+        prevButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                nextButton.setEnabled(true);
+                if(!gen.isEntrance()){
+                    adapter.setDirectionItems(gen.getPrev().directionsDetailed);
+                } else{
+                    prevButton.setEnabled(false);
+                }
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(gen.position < gen.size()-1 && gen.size() > 2){
+                    gen.skipExhibit();
+                    adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                } else {
+                    skipButton.setEnabled(false);
+                }
+            }
+        });
+
 
     }
 

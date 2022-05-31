@@ -6,14 +6,18 @@ import java.util.ArrayList;
 
 public class RouteExhibitItem implements Serializable {
     public int id = 0;
-    public String name;
+    public String source;
+    public String sink;
     public double distance;
-    public ArrayList<String> directions;
+    public ArrayList<String> directionsBrief;
+    public ArrayList<String> directionsDetailed;
 
-    RouteExhibitItem(String name, double distance , ArrayList<String> directions){
-        this.name = name;
+    RouteExhibitItem(String source, String sink, double distance , ArrayList<String> directionsDetailed, ArrayList<String> directionsBrief){
+        this.sink = sink;
+        this.source = source;
         this.distance = distance;
-        this.directions = directions;
+        this.directionsDetailed = directionsDetailed;
+        this.directionsBrief = directionsBrief;
     }
 
 

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jgrapht.alg.util.Pair;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
@@ -29,6 +32,11 @@ public class RoutePlanActivity extends AppCompatActivity {
         viewModel = viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         ArrayList<String> input = new ArrayList<>(viewModel.getIds());
+        input.add(0,"entrance_exit_gate");
+        for(String i : input){
+            Log.i("TEST", i);
+        }
+
         PathGenerator gen = new PathGenerator(this);
         RoutePlanAdapter adapter = new RoutePlanAdapter();
 
@@ -37,19 +45,10 @@ public class RoutePlanActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         ArrayList<RouteExhibitItem> route = gen.getRoute();
+        Map<String, Pair<Double, Double>> location = gen.getLocation();
         ArrayList<String> vectors = gen.getNodes();
         ArrayList<String> edge = gen.getEdge();
-        for (String s : vectors) {
-            Log.d("BEEEE", s);
-        }
-        for (String b : edge) {
-            Log.d("ROOOO", b);
-        }
-        for (RouteExhibitItem item : route) {
-            for (String i : item.directions) {
-                Log.d("ABDDSS", i);
-            }
-        }
+
         adapter.setRouteExhibitItems(route);
         directionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +56,7 @@ public class RoutePlanActivity extends AppCompatActivity {
                 //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
                 //allows transferring data through Extras
                 Bundle b = new Bundle();
-                b.putSerializable("route_exhibits", (Serializable) route);
+                b.putSerializable("route_exhibits", (Serializable) input);
                 Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);

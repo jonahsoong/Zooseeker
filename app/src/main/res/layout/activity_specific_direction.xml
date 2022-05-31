@@ -25,6 +25,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/prevButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="@id/Nextbutton"
+        app:layout_constraintEnd_toEndOf="@id/Nextbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="753dp" />
+
+    <Button
+        android:id="@+id/skipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="Skip"
+        app:layout_constraintBottom_toBottomOf="@id/Nextbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintStart_toStartOf="@id/Nextbutton" />
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"

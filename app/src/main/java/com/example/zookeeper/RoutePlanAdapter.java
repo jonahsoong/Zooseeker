@@ -59,7 +59,7 @@ public class RoutePlanAdapter extends RecyclerView.Adapter<RoutePlanAdapter.View
 
         public void setRouteItem(RouteExhibitItem routeItem, double prevDist){
             this.routeItem = routeItem;
-            this.exhibitView.setText(routeItem.name);
+            this.exhibitView.setText(routeItem.sink);
             this.distView.setText((routeItem.distance+prevDist) + "ft");
         }
     }
