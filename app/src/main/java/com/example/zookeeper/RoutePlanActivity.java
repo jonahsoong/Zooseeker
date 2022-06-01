@@ -22,6 +22,7 @@ import java.util.Map;
 public class RoutePlanActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private Button directionsButton;
+    private Button clearButton;
     private RouteViewModel viewModel;
 
     @Override
@@ -29,6 +30,7 @@ public class RoutePlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         this.directionsButton = this.findViewById(R.id.get_directions_btn);
+        clearButton = this.findViewById(R.id.clearBtn);
         viewModel = viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
         ArrayList<String> input = new ArrayList<>(viewModel.getIds());
@@ -60,6 +62,16 @@ public class RoutePlanActivity extends AppCompatActivity {
                 Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
                 intent.putExtras(b);
                 startActivity(intent);
+            }
+        });
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                viewModel.deleteAllNoUpdate();
+                startActivity(intent);
+
             }
         });
 
