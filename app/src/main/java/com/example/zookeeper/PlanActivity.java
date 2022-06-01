@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,11 @@ public class PlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan);
+
+        SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("pos", -2);
+        editor.commit();
 
         viewModel = new ViewModelProvider(this)
                 .get(RouteViewModel.class);
@@ -61,6 +67,11 @@ public class PlanActivity extends AppCompatActivity {
     }
     //back to search
     public void onBackClicked(View view) {
+        SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("pos", -1);
+        editor.commit();
+
         finish();
     }
 

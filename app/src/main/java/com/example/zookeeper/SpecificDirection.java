@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +53,7 @@ public class SpecificDirection extends AppCompatActivity {
         ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
         input.add(0,"entrance_exit_gate");
 
+
         gen = new PathGenerator(this);
         ((CurrentLocation) this.getApplication()).setPathGenerator(gen);
         current = ((CurrentLocation) this.getApplication()).getCurrentLocation();
@@ -72,6 +74,21 @@ public class SpecificDirection extends AppCompatActivity {
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        //Load if crashed code
+        SharedPreferences pref = getSharedPreferences("sharedpref",MODE_PRIVATE);
+        int page  = pref.getInt("pos", -1);
+
+        Log.d("persistence!!", "starting now");
+        updatePref();
+        if(page >= 0) {
+            if(page == 0)
+                updatePref();
+            else {
+                for (int i = 0; i < page; i++)
+                    gen.getNext();
+            }
+        }
+        Log.d("persistence!!", "finished now");
         if (briefOrDetailed)
             adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
         else
@@ -107,6 +124,7 @@ public class SpecificDirection extends AppCompatActivity {
                         Intent intent = new Intent(SpecificDirection.this, FinishScreen.class);
                         startActivity(intent);
                     }
+                    updatePref();
                 }
             });
         }
@@ -124,6 +142,7 @@ public class SpecificDirection extends AppCompatActivity {
                     } else {
                         prevButton.setEnabled(false);
                     }
+                    updatePref();
                 }
             });
         }
@@ -141,6 +160,7 @@ public class SpecificDirection extends AppCompatActivity {
                     } else {
                         skipButton.setEnabled(false);
                     }
+                    updatePref();
                 }
             });
         }
@@ -200,6 +220,21 @@ public class SpecificDirection extends AppCompatActivity {
         ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
         return ((CurrentLocation) this.getApplication()).getPathGenerator();
     }
-
+    private void updatePref(){
+        SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Log.d("persistence!!", "" + gen.position);
+        editor.putInt("pos", gen.position);
+        editor.commit();
+    }
+//    @Override
+//    protected void onStop(){
+//        super.onStop();
+//        SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        Log.d("persistence!!", "" + gen.position);
+//        editor.putInt("pos", gen.position);
+//        editor.commit();
+//    }
 
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,6 +43,21 @@ public class SearchActivity extends AppCompatActivity {
                 .get(RouteViewModel.class);
         animals =  SearchItem.loadJSON(this, "exhibit_info.json");
         animalList = new Hashtable();
+
+//        SharedPreferences pref = getSharedPreferences("sharedpref",MODE_PRIVATE);
+//        int page  = pref.getInt("pos", -1);
+//        if(page != -1){
+//            Intent intent = new Intent(this,PlanActivity.class);
+//            Log.d("ids", viewModel.getIds().toString());
+//            startActivity(intent);
+//        }
+
+
+        SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("pos", -1);
+        editor.commit();
+
         Log.d("SearchItems", animals.toString());
         for (SearchItem animal: animals) {
 //            don't add exhibit group in search
