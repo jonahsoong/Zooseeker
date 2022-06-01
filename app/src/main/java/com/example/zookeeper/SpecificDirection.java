@@ -50,6 +50,7 @@ public class SpecificDirection extends AppCompatActivity {
         //retrieves data for generating route. convenient to have full PathGenerator object for replanning.
         Bundle b = getIntent().getExtras();
         ArrayList<String> input = (ArrayList<String>) b.getSerializable("route_exhibits");
+        input.add(0,"entrance_exit_gate");
 
         gen = new PathGenerator(this);
         ((CurrentLocation) this.getApplication()).setPathGenerator(gen);
@@ -139,8 +140,8 @@ public class SpecificDirection extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(gen.position < gen.size()-1 && gen.size() > 2){
-                    gen.skipExhibit();
+                if(gen.position < gen.size()-1 && (gen.size() - gen.position) > 2){
+                    gen.rerouteSkip();
                     if (briefOrDetailed)
                         adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
                     else
