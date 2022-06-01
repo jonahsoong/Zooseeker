@@ -39,7 +39,7 @@ public class PathGeneratorTest {
     public void testNext(){
         ArrayList<String> input = new ArrayList<>(Arrays.asList("parker_aviary","fern_canyon", "flamingo", "capuchin"));
         path.generatePlan(input);
-        assertNotEquals(path.getCurrent(), path.peekNext());
+        assertNotEquals(path.getCurrent(), path.getNext());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class PathGeneratorTest {
     public void testSkip(){
         ArrayList<String> input = new ArrayList<>(Arrays.asList("entrance_exit_gate","parker_aviary","fern_canyon", "flamingo", "capuchin"));
         path.generatePlan(input);
-        path.skipExhibit();
+        path.rerouteSkip();
         //currently two in front of flamingo, needs to be changed if algo changes
         assertEquals(path.getCurrent().sink, "parker_aviary");
     }
