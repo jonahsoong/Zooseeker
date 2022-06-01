@@ -30,16 +30,16 @@ public class PromptedReplanTest {
         gen.generatePlan(input);
         //simulating what happens if you get closer to Koi Fish than Flamingo by location
         input = new ArrayList<>(Arrays.asList("koi","flamingo","capuchin"));
-        gen.generatePlan(input);
+        gen.rerouteDetour(input);
         ArrayList<RouteExhibitItem> route2 = gen.getRoute();
         for(RouteExhibitItem r : route2){
-            System.out.println("test " +  r.sink);
+            System.out.println("test " +  r.name);
         }
         ArrayList<String> output = new ArrayList<>(Arrays.asList("Koi Fish","Flamingos","Capuchin Monkeys","Entrance and Exit Gate"));
         int j = 0;
         for(RouteExhibitItem i : route2){
-            System.out.println(i.sink + " | " + output.get(j));
-            Assert.assertEquals(i.sink,output.get(j));
+            System.out.println(i.name + " | " + output.get(j));
+            Assert.assertEquals(i.name,output.get(j));
             j++;
         }
 
