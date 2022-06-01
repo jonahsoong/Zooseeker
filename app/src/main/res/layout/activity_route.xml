@@ -9,12 +9,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/route_items"
-        android:layout_width="499dp"
-        android:layout_height="1014dp"
+        android:layout_width="410dp"
+        android:layout_height="422dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/clearBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073" />
 
     <Button
         android:id="@+id/get_directions_btn"
@@ -25,5 +27,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678" />
+        app:layout_constraintVertical_bias="0.785" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="56dp"
+        android:text="clear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
