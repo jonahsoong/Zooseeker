@@ -16,6 +16,7 @@ import java.util.List;
 
 public class LocationTest {
     @Test
+    //Tests to make sure class can store new locations
     public void checkUpdateLocation(){
         LatLng newLoc = new LatLng(17, -117);
         LatLng oldLoc = LocationChecker.updateLocation(newLoc);
@@ -23,6 +24,7 @@ public class LocationTest {
         LocationChecker.updateLocation(oldLoc);
     }
     @Test
+    //Tests to make sure if location is changed, it can correctly detect the closest exhibit
     public void closestLocationChecker(){
         List<String> remainingExhibits = Arrays.asList("parker_aviary", "fern_canyon");
         List<LatLng> exhibitCoords = new ArrayList<>();

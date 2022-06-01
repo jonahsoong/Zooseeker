@@ -33,12 +33,9 @@ public class PathGeneratorTest {
         appContext = ApplicationProvider.getApplicationContext();
         path = new PathGenerator(appContext);
     }
-    @Test
-    public void testDirections(){
-        assertEquals(0,0);
-    }
 
     @Test
+    //Tests to make sure next function displays a new direction
     public void testNext(){
         ArrayList<String> input = new ArrayList<>(Arrays.asList("parker_aviary","fern_canyon", "flamingo", "capuchin"));
         path.generatePlan(input);
@@ -46,12 +43,24 @@ public class PathGeneratorTest {
     }
 
     @Test
+    //Tests to make sure previous function displays a different direction
     public void testPrevious(){
         ArrayList<String> input = new ArrayList<>(Arrays.asList("parker_aviary","fern_canyon", "flamingo", "capuchin"));
         path.generatePlan(input);
         path.getNext();
         assertNotEquals(path.getCurrent(), path.getPrev());
     }
+
+    @Test
+    //Tests skip properly skips over an exhibit
+    public void testSkip(){
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("entrance_exit_gate","parker_aviary","fern_canyon", "flamingo", "capuchin"));
+        path.generatePlan(input);
+        path.skipExhibit();
+        //currently two in front of flamingo, needs to be changed if algo changes
+        assertEquals(path.getCurrent().sink, "parker_aviary");
+    }
+
 
 
     //Outdated tests using old assets
