@@ -22,9 +22,9 @@ public class CurrentLocation extends Application {
                 names.add(r.source);
             }
             ArrayList<LatLng> loc = pg.getLocations(names);
-            LocationChecker check = new LocationChecker(currentLocation);
 
-            names.add(0,check.updateRoute(names,loc));
+
+            names.add(0,LocationChecker.updateRoute(names,loc));
             pg.rerouteDetour(names);
         }
 

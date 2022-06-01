@@ -117,12 +117,14 @@ public class PathGenerator {
         int i = 0;
 
         //dummy route exhibit to show where you are currently
-        String lastIn = "";
+        String lastIn = "entrance_exit_gate";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
+
             Log.d("hello","loop");
             String vSink = vInfo.get(gr.getEndVertex()).id;
             String vSource = vInfo.get(gr.getStartVertex()).id;
             String vName = vInfo.get(gr.getEndVertex()).name;
+            lastIn = vSource;
             double distance = 0;
             distance = gr.getWeight();
             ArrayList<String> directions1 = new ArrayList<String>();
@@ -134,31 +136,36 @@ public class PathGenerator {
             //allows the summation of weights when encountering multiple edges with the same trail
             String prevStreet = "";
             double aggregate = 0.0;
-
+            List<String> ver = gr.getVertexList();
+            for(String s : ver){
+                Log.d("FUCK", s);
+            }
+            Log.d("DDD","|||");
+            int count = 0;
             for(IdentifiedWeightedEdge e : gr.getEdgeList()){
                 String intro = "Continue on ";
                 if(directions1.size() == 0 || directions1.size() == edges.size()){
                     intro = "Proceed on ";
                 }
                 String destination = "";
-                // big logic thing for parsing whether or not the source node is the last node
-                // we visited. allows us to navigate things bidirectionally, despite having
-                // source/target relationship in the data
-                if(!lastIn.equals("")){
-                    if(lastIn.contains(vInfo.get(g.getEdgeSource(e).toString()).name)){
-                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
-                    } else{
-                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
+                String source = g.getEdgeSource(e);
+                String sink = g.getEdgeTarget(e);
+                int sinkDist = 100000;
+                int sourceDist = 100000;
+                for(int j = 0; j < ver.size(); j++){
+                    if(ver.get(j).equals(source)){
+                        sourceDist = j;
                     }
-                } else {
-                    if(vInfo.get(g.getEdgeTarget(e).toString()).name.contains("Entrance and Exit Gate")){
-                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
-                    } else{
-                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
+                    if(ver.get(j).equals(sink)){
+                        sinkDist = j;
                     }
                 }
+                if(sinkDist > sourceDist){
+                    destination = vInfo.get(sink).name;
+                } else {
+                    destination = vInfo.get(source).name;
+                }
 
-                lastIn = destination;
                 String direction;
                 //adds all strings to detailed directions Arrays, and
                 //sums up direction distance over repeated streets for brief directions.
@@ -253,27 +260,28 @@ public class PathGenerator {
         getRoute();
         totalPath.set(position,temp);
     }
+
     //iterates forward along route, returning the next RouteExhibitItem
     public RouteExhibitItem getNext(){
         if(position < route.size()-1){
+            ArrayList<String> vertex = getNodes();
+            ArrayList<LatLng> coordinates = getLocations(vertex);
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             position++;
-            recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+            recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
             return null;
         }
     }
-    public RouteExhibitItem peekNext(){
-        if(position < route.size()-1) {
-            return route.get(position + 1);
-        }
-        return null;
-    }
     //iterates backwards along route list, returning
     public RouteExhibitItem getPrev(){
         if(position > 0){
+            ArrayList<String> vertex = getNodes();
+            ArrayList<LatLng> coordinates = getLocations(vertex);
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             position--;
-            recalcPath(totalPath.get(position).getStartVertex(),totalPath.get(position).getEndVertex());
+            recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
             return null;
@@ -282,9 +290,13 @@ public class PathGenerator {
 
 
     public RouteExhibitItem getCurrent(){
-        recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+        ArrayList<String> vertex = getNodes();
+        ArrayList<LatLng> coordinates = getLocations(vertex);
+        String source = LocationChecker.updateRoute(vertex,coordinates);
+        recalcPath(totalPath.get(position).getEndVertex(),source);
         return route.get(position);
     }
+
 
 
     public boolean isFinished(){
@@ -306,6 +318,8 @@ public class PathGenerator {
     public int size(){
         return route.size();
     }
+
+
 
     public ArrayList<RouteExhibitItem> getRemaining(){
         ArrayList<RouteExhibitItem> a = new ArrayList<>();
@@ -343,11 +357,15 @@ public class PathGenerator {
         ArrayList<String> boop = new ArrayList<>();
         for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
             for(String s: gr.getVertexList()){
-                boop.add(s);
+                if(!boop.contains(s)){
+                    boop.add(s);
+                }
             }
         }
+        boop.add("entrance_exit_gate");
         return boop;
     }
+
 
     public ArrayList<String> getEdge(){
         ArrayList<String> boop = new ArrayList<>();
