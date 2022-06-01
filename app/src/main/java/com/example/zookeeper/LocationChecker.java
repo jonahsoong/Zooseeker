@@ -17,7 +17,7 @@ public class LocationChecker {
     public LocationChecker(LatLng current){
         this.current = current;
     }
-    public static String updateRoute(ArrayList<String> remaining, ArrayList<LatLng> coordinates){
+    public static String updateRoute(List<String> remaining, List<LatLng> coordinates){
 
         String closestExhibit = "";
         double closestDistance = Double.MAX_VALUE;
@@ -37,5 +37,9 @@ public class LocationChecker {
         LatLng oldLoc = current;
         current = newCoord;
         return oldLoc;
+    }
+
+    public static LatLng getLocation(){
+        return current;
     }
 }

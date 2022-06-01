@@ -2,6 +2,7 @@ package com.example.zookeeper;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import android.content.Context;
 
@@ -36,6 +37,23 @@ public class PathGeneratorTest {
     public void testDirections(){
         assertEquals(0,0);
     }
+
+    @Test
+    public void testNext(){
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("parker_aviary","fern_canyon", "flamingo", "capuchin"));
+        path.generatePlan(input);
+        assertNotEquals(path.getCurrent(), path.peekNext());
+    }
+
+    @Test
+    public void testPrevious(){
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("parker_aviary","fern_canyon", "flamingo", "capuchin"));
+        path.generatePlan(input);
+        path.getNext();
+        assertNotEquals(path.getCurrent(), path.getPrev());
+    }
+
+
     //Outdated tests using old assets
     /*
     @Test

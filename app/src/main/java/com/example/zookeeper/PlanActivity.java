@@ -59,7 +59,6 @@ public class PlanActivity extends AppCompatActivity {
         });
 
     }
-
     //back to search
     public void onBackClicked(View view) {
         finish();

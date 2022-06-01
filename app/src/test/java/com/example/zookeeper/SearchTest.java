@@ -23,23 +23,24 @@ public class SearchTest {
     @Rule
     public ActivityScenarioRule<SearchActivity> scenarioRule = new ActivityScenarioRule<>(SearchActivity.class);
 
-
     @Test
-    public void testSearch(){
-        assertEquals(0,0);
-    }
-    //Outdated test using old assets
-    /*
-    @Test
-    public void test_search() {
+    public void testLoadJson() {
         List<String> name = new ArrayList<>();
         name.add("Entrance and Exit Gate");
+        name.add("Koi Fish");
+        name.add("Flamingos");
+        name.add("Capuchin Monkeys");
         name.add("Gorillas");
-        name.add("Alligators");
-        name.add("Lions");
-        name.add("Elephant Odyssey");
-        name.add("Arctic Foxes");
-
+        name.add("Orangutans");
+        name.add("Siamangs");
+        name.add("Fern Canyon");
+        name.add("Toucan");
+        name.add("Blue Capped Motmot");
+        name.add("Spoonbill");
+        name.add("Hippos");
+        name.add("Crocodiles");
+        name.add("Bali Mynah");
+        name.add("Emerald Dove");
 
         // Create a "scenario" to move through the activity lifecycle.
         // https://developer.android.com/guide/components/activities/activity-lifecycle
@@ -51,10 +52,20 @@ public class SearchTest {
 
         // When it's ready, we're ready to test inside this lambda (anonymous inline function).
         scenario.onActivity(activity -> {
-            assertEquals(name,activity.name);
-            // No calculations have been run yet, so there shouldn't be a result!
 
+            for(String n : name) {
+                System.out.println(n);
+                assertEquals(true, activity.name.contains(n));
+            }
+            // No calculations have been run yet, so there shouldn't be a result!
         });
     }
-    */
+//    @Test
+//    public void testSearch(){
+//        //use robolectric as dependent on clicking yes on alerts
+//        assertEquals(0,0);
+//    }
+    //Outdated test using old assets
+
+
 }
