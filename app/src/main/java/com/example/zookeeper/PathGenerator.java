@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
+import org.jgrapht.alg.shortestpath.DijkstraManyToManyShortestPaths;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.util.Pair;
 
@@ -56,28 +58,11 @@ public class PathGenerator {
 
      */
     public void generatePlan(ArrayList<String> input){
+        input = cleanInput(input);
         // ensure that input ArrayList's first element is the starting element in the entire list.
         // "source" and "sink" are graph terms for the start and end
         // find grouped exhibits and replace them with their parent exhibit
-        int l = 0;
-        for(String s : input){
-            if(vInfo.get(s).group_id != null){
-                input.set(l,vInfo.get(s).group_id);
-            }
-            l++;
-        }
-        for(String x : input){
-            Log.i("HOLO",x);
-        }
-        //assume input will come as List<String> format
-        //check and delete duplicates
-        for(int j = 0; j < input.size();j++){
-            for(int i = j+1; i < input.size(); i++){
-                if(input.get(j).equals(input.get(i))){
-                    input.remove(i);
-                }
-            }
-        }
+
         for(String x : input){
             Log.i("HOLO",x);
         }
@@ -90,47 +75,7 @@ public class PathGenerator {
         // assign the source node to the starting element,
         // need that to be entrance_exit_gate for initial plan
         String source = input.get(0);;
-        // we want to be able to revise a path without completely getting rid of it
-        // so we need to know whether or not this is a replan or a first plan
-        // when the totalPlan is not empty, we know that at least one plan has been
-        // generated, so we can delete any GraphPath's after the GraphPath where
-        // the last replan node is the source.
-        if(!totalPath.isEmpty()){
-            //removes all paths that begin with a node we have not visited
-            //what remains should be all traversed paths, plus whatever path starts
-            //with the new closest node at input.get(0)
-            Log.d("huh" , totalPath.size()+"");
-            int startSize = totalPath.size() - input.size();
-            if(input.get(0) == "entrance_exit_gate"){
-                while(totalPath.size() != 0){
-                    totalPath.remove(totalPath.size()-1);
-                }
-            } else{
-                int count = 1;
-                int n = totalPath.size()-1;
-                while(!totalPath.get(n).getEndVertex().equals(input.get(0))){
-                        count++;
-                        n--;
-                }
-
-                while(count >= 0) {
-                    totalPath.remove(totalPath.size() - 1);
-                    count--;
-                }
-
-                //finds the path which occurs just before the desired first position
-                //stores the start vertex value and deletes the path
-
-                String temp = totalPath.get(totalPath.size()-1).getStartVertex();
-
-                //connects a shortest path between the last visited vertex
-                //and the desired first position
-                totalPath.add(DijkstraShortestPath.findPathBetween(g,temp,source));
-                input.remove(0);
-            }
-
-        }
-
+        input.remove(0);
         boolean[] isVisited = new boolean[input.size()];
         for(int i = 0; i < input.size(); i++){
             double weight = 1000000;
@@ -144,7 +89,7 @@ public class PathGenerator {
 
                     Log.d("HELP", input.get(j));
                     path = DijkstraShortestPath.findPathBetween(g, source, input.get(j));
-                    if(path.getWeight() < weight){
+                    if(path.getWeight() < weight && path.getWeight() != 0){
                         weight = path.getWeight();
                         src = path.getEndVertex();
                         tempPath = path;
@@ -158,8 +103,11 @@ public class PathGenerator {
             source = src;
         }
         // the last path is always from wherever you are to the exit gate, so this is hardcoded
+        Log.d("HUH?",source);
+        for(GraphPath<String,IdentifiedWeightedEdge> m : totalPath){
+            Log.d("MMM", m.getStartVertex() + m.getEndVertex());
+        }
         totalPath.add(DijkstraShortestPath.findPathBetween(g,source,"entrance_exit_gate"));
-        totalPath.remove(0);
         getRoute();
     }
 
@@ -169,11 +117,14 @@ public class PathGenerator {
         int i = 0;
 
         //dummy route exhibit to show where you are currently
-        String lastIn = "";
+        String lastIn = "entrance_exit_gate";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
+
             Log.d("hello","loop");
             String vSink = vInfo.get(gr.getEndVertex()).id;
             String vSource = vInfo.get(gr.getStartVertex()).id;
+            String vName = vInfo.get(gr.getEndVertex()).name;
+            lastIn = vSource;
             double distance = 0;
             distance = gr.getWeight();
             ArrayList<String> directions1 = new ArrayList<String>();
@@ -185,31 +136,36 @@ public class PathGenerator {
             //allows the summation of weights when encountering multiple edges with the same trail
             String prevStreet = "";
             double aggregate = 0.0;
-
+            List<String> ver = gr.getVertexList();
+            for(String s : ver){
+                Log.d("FUCK", s);
+            }
+            Log.d("DDD","|||");
+            int count = 0;
             for(IdentifiedWeightedEdge e : gr.getEdgeList()){
                 String intro = "Continue on ";
                 if(directions1.size() == 0 || directions1.size() == edges.size()){
                     intro = "Proceed on ";
                 }
                 String destination = "";
-                // big logic thing for parsing whether or not the source node is the last node
-                // we visited. allows us to navigate things bidirectionally, despite having
-                // source/target relationship in the data
-                if(!lastIn.equals("")){
-                    if(lastIn.contains(vInfo.get(g.getEdgeSource(e).toString()).name)){
-                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
-                    } else{
-                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
+                String source = g.getEdgeSource(e);
+                String sink = g.getEdgeTarget(e);
+                int sinkDist = 100000;
+                int sourceDist = 100000;
+                for(int j = 0; j < ver.size(); j++){
+                    if(ver.get(j).equals(source)){
+                        sourceDist = j;
                     }
-                } else {
-                    if(vInfo.get(g.getEdgeTarget(e).toString()).name.contains("Entrance and Exit Gate")){
-                        destination = vInfo.get(g.getEdgeSource(e).toString()).name;
-                    } else{
-                        destination = vInfo.get(g.getEdgeTarget(e).toString()).name;
+                    if(ver.get(j).equals(sink)){
+                        sinkDist = j;
                     }
                 }
+                if(sinkDist > sourceDist){
+                    destination = vInfo.get(sink).name;
+                } else {
+                    destination = vInfo.get(source).name;
+                }
 
-                lastIn = destination;
                 String direction;
                 //adds all strings to detailed directions Arrays, and
                 //sums up direction distance over repeated streets for brief directions.
@@ -234,11 +190,63 @@ public class PathGenerator {
                 }
                 prevStreet = eInfo.get(e.getId()).street;
             }
-            RouteExhibitItem temp = new RouteExhibitItem(vSource,vSink,distance,directions1,directions2);
+            RouteExhibitItem temp = new RouteExhibitItem(vSource,vSink,vName,distance,directions1,directions2);
             route.add(temp);
+        }
+        for(RouteExhibitItem n : route){
+            Log.d("NNN", n.source + " | " + n.sink);
+            Log.d("mn", position+ "");
         }
         return route;
 
+    }
+
+    public void rerouteDetour(ArrayList<String> input){
+        input = cleanInput(input);
+        String last = totalPath.get(position).getStartVertex();
+        int temp = totalPath.size()-1;
+        for(int i = temp; i >= position; i--){
+            totalPath.remove(totalPath.size() - 1);
+        }
+        totalPath.add(DijkstraShortestPath.findPathBetween(g,last,input.get(0)));
+        generatePlan(input);
+    }
+
+    public void rerouteSkip(){
+        ArrayList<RouteExhibitItem> exhibits = getRemaining();
+        ArrayList<String> input = new ArrayList<>();
+        for(RouteExhibitItem r : exhibits){
+            input.add(r.sink);
+        }
+        input = cleanInput(input);
+
+        input.remove(0);
+        input.add(0, totalPath.get(position).getStartVertex());
+        int temp = totalPath.size()-1;
+        for(int i = temp; i >= position; i--){
+            totalPath.remove(totalPath.size() - 1);
+        }
+        generatePlan(input);
+    }
+
+    private ArrayList<String> cleanInput(ArrayList<String> input){
+        int l = 0;
+        for(String s : input){
+            if(vInfo.get(s).group_id != null){
+                input.set(l,vInfo.get(s).group_id);
+            }
+            l++;
+        }
+        //assume input will come as List<String> format
+        //check and delete duplicates
+        for(int j = 0; j < input.size();j++){
+            for(int i = j+1; i < input.size(); i++){
+                if(input.get(j).equals(input.get(i))){
+                    input.remove(i);
+                }
+            }
+        }
+        return input;
     }
     /*
     whenever the route state changes, we change what the directions say. calling recalcPath
@@ -252,27 +260,28 @@ public class PathGenerator {
         getRoute();
         totalPath.set(position,temp);
     }
+
     //iterates forward along route, returning the next RouteExhibitItem
     public RouteExhibitItem getNext(){
         if(position < route.size()-1){
+            ArrayList<String> vertex = getNodes();
+            ArrayList<LatLng> coordinates = getLocations(vertex);
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             position++;
-            recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+            recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
             return null;
         }
     }
-    public RouteExhibitItem peekNext(){
-        if(position < route.size()-1) {
-            return route.get(position + 1);
-        }
-        return null;
-    }
     //iterates backwards along route list, returning
     public RouteExhibitItem getPrev(){
         if(position > 0){
+            ArrayList<String> vertex = getNodes();
+            ArrayList<LatLng> coordinates = getLocations(vertex);
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             position--;
-            recalcPath(totalPath.get(position).getStartVertex(),totalPath.get(position).getEndVertex());
+            recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
             return null;
@@ -281,38 +290,14 @@ public class PathGenerator {
 
 
     public RouteExhibitItem getCurrent(){
-        recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
+        ArrayList<String> vertex = getNodes();
+        ArrayList<LatLng> coordinates = getLocations(vertex);
+        String source = LocationChecker.updateRoute(vertex,coordinates);
+        recalcPath(totalPath.get(position).getEndVertex(),source);
         return route.get(position);
     }
 
-    public void skipExhibit(){
-        ArrayList<String> temp = new ArrayList<>();
-        for(GraphPath<String, IdentifiedWeightedEdge> gr : totalPath){
-            Log.d("help" ,gr.getStartVertex()+ gr.getEndVertex() );
-            temp.add(gr.getStartVertex());
-            temp.add(gr.getEndVertex());
-        }
-        Log.d("what" ,position+ "");
-        Log.d("what", totalPath.get(position).getEndVertex());
-        int n = position;
-        for(int i = 0; i < temp.size(); i++){
-            temp.remove(totalPath.get(position).getEndVertex());
-            if(temp.contains("entrance_exit_gate")){
-                temp.remove("entrance_exit_gate");
-            }
-        }
-        if(position == 0){
-            temp.add(0,"entrance_exit_gate");
-        } else{
-            temp.add(0,totalPath.get(position).getStartVertex());
-        }
 
-        generatePlan(temp);
-
-
-
-
-    }
 
     public boolean isFinished(){
         if(position == route.size() -1){
@@ -333,6 +318,8 @@ public class PathGenerator {
     public int size(){
         return route.size();
     }
+
+
 
     public ArrayList<RouteExhibitItem> getRemaining(){
         ArrayList<RouteExhibitItem> a = new ArrayList<>();
@@ -370,11 +357,15 @@ public class PathGenerator {
         ArrayList<String> boop = new ArrayList<>();
         for(GraphPath<String,IdentifiedWeightedEdge> gr : totalPath){
             for(String s: gr.getVertexList()){
-                boop.add(s);
+                if(!boop.contains(s)){
+                    boop.add(s);
+                }
             }
         }
+        boop.add("entrance_exit_gate");
         return boop;
     }
+
 
     public ArrayList<String> getEdge(){
         ArrayList<String> boop = new ArrayList<>();

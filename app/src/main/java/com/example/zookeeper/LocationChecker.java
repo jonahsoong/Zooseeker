@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationChecker {
-    private static LatLng current;
+    private static LatLng current = new LatLng(32.73459618734685,-117.14936);;
 
 
-    public LocationChecker(LatLng current){
-        this.current = current;
+    public LocationChecker(){
     }
     public static String updateRoute(List<String> remaining, List<LatLng> coordinates){
 
