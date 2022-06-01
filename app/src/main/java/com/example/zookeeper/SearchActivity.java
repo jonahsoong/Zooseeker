@@ -32,6 +32,7 @@ public class SearchActivity extends AppCompatActivity {
     List<SearchItem> animals;
     private RouteViewModel viewModel;
     Hashtable<String, SearchItem> animalList;
+    private final LocationPermissionChecker permissionChecker = new LocationPermissionChecker(SearchActivity.this);
 
 
 
@@ -43,15 +44,10 @@ public class SearchActivity extends AppCompatActivity {
                 .get(RouteViewModel.class);
         animals =  SearchItem.loadJSON(this, "exhibit_info.json");
         animalList = new Hashtable();
-
-//        SharedPreferences pref = getSharedPreferences("sharedpref",MODE_PRIVATE);
-//        int page  = pref.getInt("pos", -1);
-//        if(page != -1){
-//            Intent intent = new Intent(this,PlanActivity.class);
-//            Log.d("ids", viewModel.getIds().toString());
-//            startActivity(intent);
-//        }
-
+        //Begin Location Services
+        //permissionChecker.ensurePermissions();
+       // Intent locationIntent = new Intent(SearchActivity.this, LocationService.class);
+        //startService(locationIntent);
 
         SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

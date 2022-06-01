@@ -56,6 +56,10 @@ public class PlanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(viewModel.getIds().isEmpty()){
+                    SharedPreferences prefs = getSharedPreferences("sharedpref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("pos", -1);
+                    editor.commit();
                     finish();
                 } else {
                     Intent intent = new Intent(PlanActivity.this, RoutePlanActivity.class);

@@ -18,8 +18,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/direction_items"
-        android:layout_width="wrap_content"
-        android:layout_height="295dp"
+        android:layout_width="371dp"
+        android:layout_height="276dp"
         android:layout_marginTop="196dp"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
