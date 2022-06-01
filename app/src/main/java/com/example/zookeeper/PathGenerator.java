@@ -196,11 +196,12 @@ public class PathGenerator {
 
     public void rerouteDetour(ArrayList<String> input){
         input = cleanInput(input);
-        input.add(0, totalPath.get(position).getStartVertex());
+        String last = totalPath.get(position).getStartVertex();
         int temp = totalPath.size()-1;
         for(int i = temp; i >= position; i--){
             totalPath.remove(totalPath.size() - 1);
         }
+        totalPath.add(DijkstraShortestPath.findPathBetween(g,last,input.get(0)));
         generatePlan(input);
     }
 
@@ -285,34 +286,6 @@ public class PathGenerator {
         return route.get(position);
     }
 
-    public void skipExhibit(){
-        ArrayList<String> temp = new ArrayList<>();
-        for(GraphPath<String, IdentifiedWeightedEdge> gr : totalPath){
-            Log.d("help" ,gr.getStartVertex()+ gr.getEndVertex() );
-            temp.add(gr.getStartVertex());
-            temp.add(gr.getEndVertex());
-        }
-        Log.d("what" ,position+ "");
-        Log.d("what", totalPath.get(position).getEndVertex());
-        int n = position;
-        for(int i = 0; i < temp.size(); i++){
-            temp.remove(totalPath.get(position).getEndVertex());
-            if(temp.contains("entrance_exit_gate")){
-                temp.remove("entrance_exit_gate");
-            }
-        }
-        if(position == 0){
-            temp.add(0,"entrance_exit_gate");
-        } else{
-            temp.add(0,totalPath.get(position).getStartVertex());
-        }
-
-        generatePlan(temp);
-
-
-
-
-    }
 
     public boolean isFinished(){
         if(position == route.size() -1){

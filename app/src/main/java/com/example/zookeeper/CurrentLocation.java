@@ -25,7 +25,7 @@ public class CurrentLocation extends Application {
             LocationChecker check = new LocationChecker(currentLocation);
 
             names.add(0,check.updateRoute(names,loc));
-            pg.generatePlan(names);
+            pg.rerouteDetour(names);
         }
 
         public void setPathGenerator(PathGenerator pg) {

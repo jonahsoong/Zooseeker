@@ -133,7 +133,7 @@ public class SpecificDirection extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (gen.position < gen.size() - 1 && gen.size()-gen.position > 2) {
-                        gen.skipExhibit();
+                        gen.rerouteSkip();
                         if (briefOrDetailed)
                             adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
                         else
@@ -170,8 +170,12 @@ public class SpecificDirection extends AppCompatActivity {
                     LocationChecker.updateLocation(new LatLng(latInput, lngInput));
                     String closest = LocationChecker.updateRoute(gen.getExhibitString(), gen.getRemainingLocations());
                     //Alert and do substantial replan
-                    if (!closest.equals(gen.peekNext().sink) && !closest.equals(gen.getCurrent().sink)) {
-                        Log.d("Show Alert", "Closest: " + closest + " Next: " + gen.peekNext().sink);
+                    if  (!closest.equals(gen.getCurrent().sink)) {
+                        Log.d("Show Alert", "Closest: " + closest + " Next: " + gen.getCurrent().sink);
+                        ArrayList<String> input = gen.getExhibitString();
+                        input.add(0,closest);
+                        gen.rerouteDetour(input);
+
 
                     }
                     //do nothing, sill following plan
