@@ -69,7 +69,6 @@ public class SpecificDirection extends AppCompatActivity {
         // this fixes reliably but don't know why that happens
 
 
-
         recyclerView = findViewById(R.id.direction_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -78,104 +77,108 @@ public class SpecificDirection extends AppCompatActivity {
         else
             adapter.setDirectionItems(gen.getCurrent().directionsBrief);
 
-//        btn onclick bod = false;
-//        if (bod == true) detailed
-//        else brief
         briefDetailedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-           @Override
-           public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-               briefOrDetailed = b;
-               if(briefOrDetailed){
-                   adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
-                   briefDetailedSwitch.setText("change to brief directions");
-               }
-               else{
-                   adapter.setDirectionItems(gen.getCurrent().directionsBrief);
-                   briefDetailedSwitch.setText("change to detailed directions");
-               }
-           }
-       });
-//                new () {
-//            @Override
-//            public void onClick(View view) {
-//                //dDir.toggle();
-//                briefDetailedSwitch.toggle();
-//                if(briefDetailedSwitch.isChecked())
-//                    briefOrDetailed = true;
-//                else
-//                    briefOrDetailed = false;
-//            }
-//        });
-                nextButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        prevButton.setEnabled(true);
-                        if (!gen.isFinished()) {
-                            //visited.add(route.remove(0));
-                            if (briefOrDetailed)
-                                adapter.setDirectionItems(gen.getNext().directionsDetailed);
-                            else
-                                adapter.setDirectionItems(gen.getNext().directionsBrief);
-                        } else {
-                            nextButton.setEnabled(false);
-                        }
-                    }
-                });
-
-        prevButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                nextButton.setEnabled(true);
-                if(!gen.isEntrance()){
-                    if (briefOrDetailed)
-                        adapter.setDirectionItems(gen.getPrev().directionsDetailed);
-                    else
-                        adapter.setDirectionItems(gen.getPrev().directionsBrief);
-                } else{
-                    prevButton.setEnabled(false);
-                }
-            }
-        });
-
-        skipButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(gen.position < gen.size()-1 && (gen.size() - gen.position) > 2){
-                    gen.rerouteSkip();
-                    if (briefOrDetailed)
-                        adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
-                    else
-                        adapter.setDirectionItems(gen.getCurrent().directionsBrief);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                briefOrDetailed = b;
+                if (briefOrDetailed) {
+                    adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                    briefDetailedSwitch.setText("change to brief directions");
                 } else {
-                    skipButton.setEnabled(false);
+                    adapter.setDirectionItems(gen.getCurrent().directionsBrief);
+                    briefDetailedSwitch.setText("change to detailed directions");
                 }
             }
         });
-
-        confirmMocking.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                EditText latitude = findViewById(R.id.LatInput);
-                EditText longitude = findViewById(R.id.LngInput);
-//        convert to double
-                double latInput = Double.MIN_VALUE;
-                double lngInput = Double.MIN_VALUE;
-                try {
-                    latInput = Double.parseDouble(latitude.getText().toString());
-                    lngInput = Double.parseDouble(longitude.getText().toString());
-                } catch (NumberFormatException e) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SpecificDirection.this);
-                    builder.setMessage("Invalid Input! Please enter a number.");
-                    builder.create();
+        //next button
+        {
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                //need to reset position as well
+                public void onClick(View v) {
+                    prevButton.setEnabled(true);
+                    if (!gen.isFinished()) {
+                        //visited.add(route.remove(0));
+                        if (briefOrDetailed)
+                            adapter.setDirectionItems(gen.getNext().directionsDetailed);
+                        else
+                            adapter.setDirectionItems(gen.getNext().directionsBrief);
+                    } else {
+                        Intent intent = new Intent(SpecificDirection.this, FinishScreen.class);
+                        startActivity(intent);
+                    }
                 }
-                LocationChecker.updateLocation(new LatLng(latInput, lngInput));
-                String closest = LocationChecker.updateRoute(gen.getExhibitString(),gen.getRemainingLocations());
-//                double latInput = Double.parseDouble(latitude.getText().toString());
-//                double lngInput = Double.parseDouble(longitude.getText().toString());
-                //gen = setLocation(latInput,lngInput);
+            });
+        }
+        //prev button
+        {
+            prevButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextButton.setEnabled(true);
+                    if (!gen.isEntrance()) {
+                        if (briefOrDetailed)
+                            adapter.setDirectionItems(gen.getPrev().directionsDetailed);
+                        else
+                            adapter.setDirectionItems(gen.getPrev().directionsBrief);
+                    } else {
+                        prevButton.setEnabled(false);
+                    }
+                }
+            });
+        }
+        //skip button
+        {
+            skipButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (gen.position < gen.size() - 1 && gen.size()-gen.position > 2) {
+                        gen.skipExhibit();
+                        if (briefOrDetailed)
+                            adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
+                        else
+                            adapter.setDirectionItems(gen.getCurrent().directionsBrief);
+                    } else {
+                        skipButton.setEnabled(false);
+                    }
+                }
+            });
+        }
+        //mock button
+        {
+            confirmMocking.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditText latitude = findViewById(R.id.LatInput);
+                    EditText longitude = findViewById(R.id.LngInput);
+                    double latInput = Double.MIN_VALUE;
+                    double lngInput = Double.MIN_VALUE;
+                    Log.d("Show Alert", "Parsing Inputs");
+                    //parse inputs
+                    try {
+                        latInput = Double.parseDouble(latitude.getText().toString());
+                        lngInput = Double.parseDouble(longitude.getText().toString());
+                    } catch (NumberFormatException e) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SpecificDirection.this);
+                        builder.setMessage("Invalid Input! Please enter a number.");
+                        builder.create();
+                    }
+                    Log.d("Show Alert", "Checking Locations. Lat " + latInput + " Lng: " + lngInput);
+                    Log.d("Show", "" + gen.getExhibitString());
+                    Log.d("Show", "" + gen.getRemainingLocations());
+                    //update location and find new closest exhibit
+                    LocationChecker.updateLocation(new LatLng(latInput, lngInput));
+                    String closest = LocationChecker.updateRoute(gen.getExhibitString(), gen.getRemainingLocations());
+                    //Alert and do substantial replan
+                    if (!closest.equals(gen.peekNext().sink) && !closest.equals(gen.getCurrent().sink)) {
+                        Log.d("Show Alert", "Closest: " + closest + " Next: " + gen.peekNext().sink);
 
-//            update the location with the input
-//            we need to decide whether to call replan
+                    }
+                    //do nothing, sill following plan
+                    else {
+                        Log.d("Show Alert", "Closest is same!");
+                    }
+
 
                     if (briefOrDetailed)
                         adapter.setDirectionItems(gen.getCurrent().directionsDetailed);
@@ -183,12 +186,12 @@ public class SpecificDirection extends AppCompatActivity {
                         adapter.setDirectionItems(gen.getCurrent().directionsBrief);
                     //latitude.setText("");
                     //longitude.setText("");
-            }
-        });
+                }
+            });
 
 
+        }
     }
-
     public PathGenerator setLocation(double latInput, double lngInput){
         ((CurrentLocation) this.getApplication()).setCurrentLocation(new LatLng(latInput,lngInput));
         return ((CurrentLocation) this.getApplication()).getPathGenerator();

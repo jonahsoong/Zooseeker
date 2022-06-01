@@ -24,3 +24,10 @@ public class RouteExhibitItem implements Serializable {
 
 
 }
+/**
+ * fern canyon: "lat": 32.7337949159672,
+ *         "lng": -117.1769866067953
+ *
+ * parker aviary: "lat": 32.73870593465047,
+ *         "lng": -117.1695850705821
+ */
