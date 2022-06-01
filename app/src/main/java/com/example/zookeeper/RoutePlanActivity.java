@@ -9,6 +9,7 @@ import org.jgrapht.alg.util.Pair;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,18 @@ public class RoutePlanActivity extends AppCompatActivity {
             Log.i("TEST", i);
         }
 
+
+        SharedPreferences prefs = getSharedPreferences("sharedpref",MODE_PRIVATE);
+        int page  = prefs.getInt("pos", -1);
+        if(page >= 0 )
+            directionsButtonClick(input);
+        else {
+            //update last page
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("pos", -3);
+            editor.commit();
+        }
+        Log.d("pers", "hello");
         PathGenerator gen = new PathGenerator(this);
         RoutePlanAdapter adapter = new RoutePlanAdapter();
 
@@ -55,13 +68,8 @@ public class RoutePlanActivity extends AppCompatActivity {
         directionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
-                //allows transferring data through Extras
-                Bundle b = new Bundle();
-                b.putSerializable("route_exhibits", (Serializable) input);
-                Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
-                intent.putExtras(b);
-                startActivity(intent);
+
+                directionsButtonClick(input);
             }
         });
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -75,5 +83,14 @@ public class RoutePlanActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void directionsButtonClick(ArrayList<String> input){
+        //https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
+        //allows transferring data through Extras
+        Bundle b = new Bundle();
+        b.putSerializable("route_exhibits", (Serializable) input);
+        Intent intent = new Intent(RoutePlanActivity.this, SpecificDirection.class);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }
