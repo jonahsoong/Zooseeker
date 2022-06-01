@@ -266,8 +266,11 @@ public class PathGenerator {
         if(position < route.size()-1){
             ArrayList<String> vertex = getNodes();
             ArrayList<LatLng> coordinates = getLocations(vertex);
-            String source = LocationChecker.updateRoute(vertex,coordinates);
+
             position++;
+
+            LocationChecker.updateLocation(new LatLng(vInfo.get(route.get(position).source).lat,vInfo.get(route.get(position).source).lng));
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
@@ -279,8 +282,9 @@ public class PathGenerator {
         if(position > 0){
             ArrayList<String> vertex = getNodes();
             ArrayList<LatLng> coordinates = getLocations(vertex);
-            String source = LocationChecker.updateRoute(vertex,coordinates);
+            LocationChecker.updateLocation(new LatLng(vInfo.get(route.get(position).source).lat,vInfo.get(route.get(position).source).lng));
             position--;
+            String source = LocationChecker.updateRoute(vertex,coordinates);
             recalcPath(totalPath.get(position).getEndVertex(),source);
             return route.get(position);
         } else{
@@ -292,6 +296,7 @@ public class PathGenerator {
     public RouteExhibitItem getCurrent(){
         ArrayList<String> vertex = getNodes();
         ArrayList<LatLng> coordinates = getLocations(vertex);
+        LocationChecker.updateLocation(new LatLng(vInfo.get(route.get(position).source).lat,vInfo.get(route.get(position).source).lng));
         String source = LocationChecker.updateRoute(vertex,coordinates);
         recalcPath(totalPath.get(position).getEndVertex(),source);
         return route.get(position);

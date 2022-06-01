@@ -27,7 +27,7 @@ public class PromptedReplanTest {
     }
 
     @Test
-    public void testEarlyReplan(){
+    public void testReplanDetour(){
         ArrayList<String> input = new ArrayList<>(Arrays.asList("entrance_exit_gate","flamingo","capuchin","koi"));
         PathGenerator gen = new PathGenerator(appContext);
         gen.generatePlan(input);
@@ -46,6 +46,22 @@ public class PromptedReplanTest {
             j++;
         }
 
+    }
+
+    public void testReplanSkip(){
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("entrance_exit_gate","flamingo", "capuchin", "koi"));
+        PathGenerator gen = new PathGenerator(appContext);
+        gen.generatePlan(input);
+        gen.getNext();
+        gen.rerouteSkip();
+        ArrayList<RouteExhibitItem> route2 = gen.getRoute();
+        ArrayList<String> output = new ArrayList<>(Arrays.asList("Capuchin Monkeys","Koi Fish","Entrance and Exit Gate"));
+        int j = 0;
+        for(RouteExhibitItem i : route2){
+            System.out.println(i.name + " | " + output.get(j));
+            Assert.assertEquals(i.name,output.get(j));
+            j++;
+        }
     }
 //    @Test
 //    public void testLateReplan(){
