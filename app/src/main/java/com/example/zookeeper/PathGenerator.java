@@ -191,6 +191,11 @@ public class PathGenerator {
                 prevStreet = eInfo.get(e.getId()).street;
             }
             RouteExhibitItem temp = new RouteExhibitItem(vSource,vSink,vName,distance,directions1,directions2);
+            ArrayList<String> def = new ArrayList<>();
+            def.add("Arrived at your destination");
+            if(vSource.equals(vSink)){
+                temp = new RouteExhibitItem(vSource,vSink,vName,distance,def,def);
+            }
             route.add(temp);
         }
         for(RouteExhibitItem n : route){
