@@ -85,7 +85,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         //listen for location updates
         {
-            var checkLoc = new LocationChecker(this);
+            //var checkLoc = new LocationChecker(this);
             var provider = LocationManager.GPS_PROVIDER;
             var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             var locationListener = new LocationListener() {
@@ -95,7 +95,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                     var lat = location.getLatitude();
                     var lng = location.getLongitude();
-                    checkLoc.updateRoute(lat, lng);
+                    //checkLoc.updateRoute(lat, lng);
                     //DistanceChecker
 
                 }

@@ -3,6 +3,8 @@ package com.example.zookeeper;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -19,6 +21,7 @@ public class PathGenerator {
     private Map<String, ZooData.EdgeInfo> eInfo;
     private Graph<String, IdentifiedWeightedEdge> g;
     private List<GraphPath<String, IdentifiedWeightedEdge>> totalPath;
+    private ArrayList<String> input;
     // for user story #73 Detailed Directions
     private ArrayList<RouteExhibitItem> route;
     public int position;
@@ -36,9 +39,12 @@ public class PathGenerator {
         position = 0;
 
     }
+    public void updateInputs(ArrayList<String> input){
+        this.input = input;
+    }
     /*
     generatePlan turns the input into a full Plan. It filters the input, then computes the shortest
-    paths between all verticies in the input.
+    paths between all vertices in the input.
     Whatever is in the first position of the input ArrayList is the first vertex of the path to be
     computed. If this is the first time generatePlan has been called, then it simply generates
     from the start vertex. If the plan is pre-populated, then any verticies in the stored plan
@@ -106,12 +112,15 @@ public class PathGenerator {
                         count++;
                         n--;
                 }
-                while(count >=0) {
+
+                while(count >= 0) {
                     totalPath.remove(totalPath.size() - 1);
                     count--;
                 }
+
                 //finds the path which occurs just before the desired first position
                 //stores the start vertex value and deletes the path
+
                 String temp = totalPath.get(totalPath.size()-1).getStartVertex();
 
                 //connects a shortest path between the last visited vertex
@@ -163,8 +172,8 @@ public class PathGenerator {
         String lastIn = "";
         for(GraphPath<String,IdentifiedWeightedEdge> gr: totalPath){
             Log.d("hello","loop");
-            String vSink = vInfo.get(gr.getEndVertex()).name;
-            String vSource = vInfo.get(gr.getStartVertex()).name;
+            String vSink = vInfo.get(gr.getEndVertex()).id;
+            String vSource = vInfo.get(gr.getStartVertex()).id;
             double distance = 0;
             distance = gr.getWeight();
             ArrayList<String> directions1 = new ArrayList<String>();
@@ -253,6 +262,12 @@ public class PathGenerator {
             return null;
         }
     }
+    public RouteExhibitItem peekNext(){
+        if(position < route.size()-1) {
+            return route.get(position + 1);
+        }
+        return null;
+    }
     //iterates backwards along route list, returning
     public RouteExhibitItem getPrev(){
         if(position > 0){
@@ -263,6 +278,7 @@ public class PathGenerator {
             return null;
         }
     }
+
 
     public RouteExhibitItem getCurrent(){
         recalcPath(totalPath.get(position).getEndVertex(),totalPath.get(position).getStartVertex());
@@ -316,6 +332,37 @@ public class PathGenerator {
 
     public int size(){
         return route.size();
+    }
+
+    public ArrayList<RouteExhibitItem> getRemaining(){
+        ArrayList<RouteExhibitItem> a = new ArrayList<>();
+        for(int i = position; i < route.size(); i++){
+            a.add(route.get(i));
+        }
+        return a;
+    }
+    public ArrayList<String> getExhibitString(){
+        ArrayList<RouteExhibitItem> b = getRemaining();
+        ArrayList<String> a = new ArrayList<>();
+        for(int i = 0; i < b.size()-1; i++){
+            a.add(b.get(i).sink);
+        }
+        return a;
+    }
+    public ArrayList<LatLng> getRemainingLocations(){
+        ArrayList<RouteExhibitItem> b = getRemaining();
+        ArrayList<LatLng> a = new ArrayList<>();
+        for(int i = 0; i < b.size()-1; i++){
+            a.add(new LatLng(vInfo.get(b.get(i).sink).lat, vInfo.get(b.get(i).sink).lng));
+        }
+        return a;
+    }
+    public ArrayList<LatLng> getLocations(ArrayList<String> verticies){
+        ArrayList<LatLng> a = new ArrayList<>();
+        for(String s: verticies){
+            a.add(new LatLng(vInfo.get(s).lat,vInfo.get(s).lng));
+        }
+        return a;
     }
 
 

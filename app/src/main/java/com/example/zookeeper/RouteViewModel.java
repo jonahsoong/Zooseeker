@@ -78,4 +78,12 @@ public class RouteViewModel extends AndroidViewModel {
         }
         update.setText("Number of Exhibits: 0");
     }
+
+    public void deleteAllNoUpdate() {
+        List<RouteItem> exist = routeDao.getAll();
+        for(RouteItem i : exist){
+            routeDao.delete(i);
+        }
+
+    }
 }

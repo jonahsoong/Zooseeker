@@ -5,42 +5,41 @@ import android.location.Location;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationChecker {
-    private RouteViewModel viewModel;
+    private static LatLng current;
 
 
-    public LocationChecker(ViewModelStoreOwner owner){
-        viewModel = new ViewModelProvider(owner)
-                .get(RouteViewModel.class);
+    public LocationChecker(LatLng current){
+        this.current = current;
     }
-    public void updateRoute(double lat, double lng){
-        //only remaining items
-        List<RouteItem> route = viewModel.getList();
-        //next Item
-        RouteItem nextItem = null;
-        RouteItem closestExhibit = nextItem;
+    public static String updateRoute(List<String> remaining, List<LatLng> coordinates){
+
+        String closestExhibit = "";
         double closestDistance = Double.MAX_VALUE;
-        for(RouteItem r : route){
-            double dist = Math.sqrt(Math.pow(lat-r.lat,2) + Math.pow(lng-r.lng,2));
+        for(int i = 0; i < remaining.size(); i++){
+            String s = remaining.get(i);
+            double dist = Math.sqrt(Math.pow(current.latitude-coordinates.get(i).latitude,2)
+                    + Math.pow(current.longitude-coordinates.get(i).longitude,2));
             if(dist < closestDistance){
-                closestExhibit = nextItem;
+                closestExhibit = s;
                 closestDistance = dist;
             }
         }
+        return closestExhibit;
 
-        if(!closestExhibit.equals(nextItem)){
-            //TODO: pop alert
-            //call replan
-        }
-        //off track but nextItem still the same
-        else{
-        //            //replan
-        }
-        //next exhibit(location)
-        //locatino of remaining exhibits
+    }
+    public static LatLng updateLocation(LatLng newCoord){
+        LatLng oldLoc = current;
+        current = newCoord;
+        return oldLoc;
+    }
 
-
+    public static LatLng getLocation(){
+        return current;
     }
 }
